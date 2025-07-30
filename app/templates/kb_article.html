@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block title %}{{ article.title }}{% endblock %}
+{% block content %}
+    <div class="kb-article-header">
+        <div>
+            <span class="kb-article-category">{{ article.category }}</span>
+            <h1>{{ article.title }}</h1>
+            <span class="kb-article-meta">Laatst bijgewerkt: {{ article.updated_at }}</span>
+        </div>
+        <div class="kb-article-actions">
+            <a href="{{ url_for('kb.kb_edit', article_id=article.id, user=user, password=password) }}" class="submit-button">Bewerken</a>
+            <form action="{{ url_for('kb.kb_delete', article_id=article.id, user=user, password=password) }}" method="post" onsubmit="return confirm('Weet u zeker dat u dit artikel wilt verwijderen?');">
+                <button type="submit" class="delete-button">Verwijderen</button>
+            </form>
+        </div>
+    </div>
+    <div class="kb-article-content">
+        {{ article.content }}
+    </div>
+{% endblock %}

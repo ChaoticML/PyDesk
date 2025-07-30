@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+{% block title %}Nieuw Ticket Aanmaken{% endblock %}
+{% block content %}
+    <h1>Nieuw Ticket Aanmaken</h1>
+    <form method="post" class="ticket-form" action="{{ url_for('main.create', user=user, password=password) }}">
+        <div class="form-group">
+            <label for="requester_name">Naam Aanvrager:</label>
+            <input type="text" id="requester_name" name="requester_name" required>
+        </div>
+        <div class="form-group">
+            <label for="requester_phone">Telefoonnummer:</label>
+            <input type="text" id="requester_phone" name="requester_phone">
+        </div>
+        <div class="form-group">
+            <label for="requester_email">E-mail:</label>
+            <input type="email" id="requester_email" name="requester_email">
+        </div>
+        <div class="form-group">
+            <label for="title">Onderwerp:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Beschrijving:</label>
+            <textarea id="description" name="description" required rows="10"></textarea>
+        </div>
+        <div class="form-group sensitive-notes-group">
+            <label for="sensitive_notes">Vertrouwelijke Notities (bijv. Wachtwoorden, IP-adressen):</label>
+            <div class="warning-text">Deze gegevens worden versleuteld opgeslagen.</div>
+            <textarea id="sensitive_notes" name="sensitive_notes" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="priority">Prioriteit:</label>
+            <select id="priority" name="priority">
+                <option value="Laag">Laag</option>
+                <option value="Gemiddeld" selected>Gemiddeld</option>
+                <option value="Hoog">Hoog</option>
+            </select>
+        </div>
+        <button type="submit" class="submit-button">Ticket Aanmaken & Printen</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block title %}Inloggen{% endblock %}
+{% block content %}
+    <div class="welcome-container">
+        <h1>Welkom bij HESK Lite</h1>
+        <p>Voer uw naam en het hoofdwachtwoord in om de applicatie te ontgrendelen.</p>
+        <form action="{{ url_for('main.index') }}" method="post" class="ticket-form">
+            <div class="form-group">
+                <label for="user">Uw Naam:</label>
+                <input type="text" id="user" name="user" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Hoofdwachtwoord:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="submit-button">Ontgrendelen</button>
+        </form>
+    </div>
+{% endblock %}

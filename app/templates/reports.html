@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block title %}Rapporten{% endblock %}
+{% block content %}
+    <h1>Rapporten</h1>
+    <p>Deze pagina toont een samenvatting van alle gegevens in het systeem.</p>
+    <div class="report-grid">
+        <div class="chart-container">
+            <img src="{{ url_for('reports.status_chart') }}" alt="Tickets per Status">
+        </div>
+        <div class="chart-container">
+            <img src="{{ url_for('reports.priority_chart') }}" alt="Tickets per Prioriteit">
+        </div>
+        <div class="chart-container">
+            <img src="{{ url_for('reports.assignment_chart') }}" alt="Toegewezen vs. Niet-toegewezen Tickets">
+        </div>
+        <div class="chart-container full-width">
+            <img src="{{ url_for('reports.kb_chart') }}" alt="Kennisbank Artikelen per Categorie">
+        </div>
+    </div>
+{% endblock %}

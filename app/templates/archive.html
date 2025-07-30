@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block title %}Archief{% endblock %}
+{% block content %}
+    <h1>Archief</h1>
+    <p>Deze pagina toont alle tickets die zijn gemarkeerd als 'Opgelost' of 'Gesloten'.</p>
+    {% for ticket in tickets %}
+        <div class="ticket-summary">
+            <h3><a href="{{ url_for('main.view_ticket', ticket_id=ticket.id, user=user, password=password) }}">{{ ticket.title }}</a></h3>
+            <p>
+                <strong>Status:</strong> {{ ticket.status }} |
+                <strong>Prioriteit:</strong> {{ ticket.priority }} |
+                <strong>Aanvrager:</strong> {{ ticket.requester_name }} |
+                <strong>Toegewezen aan:</strong> {% if ticket.assigned_to %}{{ ticket.assigned_to }}{% else %}Niemand{% endif %}
+            </p>
+        </div>
+    {% else %}
+        <p>Geen gearchiveerde tickets gevonden.</p>
+    {% endfor %}
+{% endblock %}

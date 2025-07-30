@@ -1,0 +1,80 @@
+{% extends 'layout.html' %}
+{% block title %}Ticket #{{ ticket.id }}{% endblock %}
+{% block content %}
+    <div class="ticket-view-grid">
+        <div class="ticket-main">
+            <h1>#{{ ticket.id }}: {{ ticket.title }}</h1>
+            <div class="ticket-details">
+                <div class="detail-section">
+                    <p><strong>Status:</strong> {{ ticket.status }}</p>
+                    <p><strong>Prioriteit:</strong> {{ ticket.priority }}</p>
+                    <p><strong>Aangemaakt:</strong> {{ ticket.created_at }}</p>
+                </div>
+                <div class="detail-section assignment-section">
+                    <strong>Toegewezen aan:</strong>
+                    {% if ticket.assigned_to %}
+                        <span class="assigned-user">{{ ticket.assigned_to }}</span>
+                    {% else %}
+                        <span class="unassigned">Niet toegewezen</span>
+                        <form action="{{ url_for('main.assign', ticket_id=ticket.id, user=user, password=password) }}" method="post" style="display: inline-block; margin-left: 20px;">
+                            <button type="submit" class="assign-button">Aan mij toewijzen</button>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="detail-section">
+                    <p><strong>Aanvrager:</strong> {{ ticket.requester_name }}</p>
+                    <p><strong>Telefoon:</strong> {{ ticket.requester_phone }}</p>
+                    <p><strong>E-mail:</strong> {{ ticket.requester_email }}</p>
+                </div>
+                <div class="detail-section description">
+                    <h3>Beschrijving</h3>
+                    <p>{{ ticket.description }}</p>
+                </div>
+                {% if ticket.sensitive_notes and ticket.status not in ['Resolved', 'Closed'] %}
+                <div class="detail-section sensitive-notes-view">
+                    <h3>Vertrouwelijke Notities</h3>
+                    <div class="warning-box">
+                        {% if 'DECRYPTIE MISLUKT' in ticket.sensitive_notes %}
+                            <p style="color: red; font-weight: bold;">{{ ticket.sensitive_notes }}</p>
+                        {% else %}
+                            <p>{{ ticket.sensitive_notes }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="ticket-sidebar">
+            <div class="management-panel">
+                <h3>Ticket Beheren</h3>
+                <form action="{{ url_for('main.update', ticket_id=ticket.id, user=user, password=password) }}" method="post" class="ticket-form">
+                    <div class="form-group">
+                        <label for="status">Status Wijzigen:</label>
+                        <select id="status" name="status">
+                            <option value="New" {% if ticket.status == 'New' %}selected{% endif %}>Nieuw</option>
+                            <option value="In Progress" {% if ticket.status == 'In Progress' %}selected{% endif %}>In Behandeling</option>
+                            <option value="Resolved" {% if ticket.status == 'Resolved' %}selected{% endif %}>Opgelost</option>
+                            <option value="Closed" {% if ticket.status == 'Closed' %}selected{% endif %}>Gesloten</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Reactie Toevoegen:</label>
+                        <textarea id="comment" name="comment" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Ticket Bijwerken</button>
+                </form>
+            </div>
+            <div class="comments-history">
+                <h3>Geschiedenis</h3>
+                {% for comment in comments %}
+                    <div class="comment-item">
+                        <p class="comment-body">{{ comment.comment_text }}</p>
+                        <p class="comment-meta">door <strong>{{ comment.author }}</strong> op {{ comment.created_at }}</p>
+                    </div>
+                {% else %}
+                    <p>Nog geen geschiedenis.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

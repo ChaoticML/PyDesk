@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HESK Lite{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a class="nav-brand" href="{{ url_for('main.welcome') }}">HESK Lite</a>
+            {% if user and user != 'Guest' %}
+            <div class="nav-links">
+                <a href="{{ url_for('main.index', user=user, password=password) }}">Actieve Tickets</a>
+                <a href="{{ url_for('main.archive', user=user, password=password) }}">Archief</a>
+                <a href="{{ url_for('kb.kb_index', user=user, password=password) }}">Kennisbank</a>
+                <a href="{{ url_for('reports.reports_index', user=user, password=password) }}">Rapporten</a>
+                <a href="{{ url_for('main.create', user=user, password=password) }}">Nieuw Ticket</a>
+            </div>
+            <div class="nav-user">
+                <span>Welkom, {{ user }}</span>
+                <form action="{{ url_for('main.shutdown') }}" method="get" onsubmit="return confirm('Weet u zeker dat u de applicatie wilt afsluiten?');" style="display: inline-block; margin-left: 1em;">
+                    <button type="submit" class="shutdown-button">Afsluiten</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+    <main class="content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
