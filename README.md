@@ -29,7 +29,7 @@ De applicatie is gebouwd met duurzaamheid en prestaties in gedachten:
 
 De applicatie is ontworpen om foolproof te zijn:
 
-1.  **Start de Applicatie:** Due the run.py en het bat bestand op een usb. of run het locaal op je computer met windows 10 of 11
+1.  **Start de Applicatie:** Doe het run.py en het bat bestand op een usb. of run het locaal op je computer met windows 10 of 11
 2.  **Ontgrendel de Database:**
     *   **Eerste keer:** Voer uw naam in en kies een sterk **hoofdwachtwoord**. Dit wachtwoord moet u voortaan altijd gebruiken. **Vergeet dit wachtwoord niet, want het is onherstelbaar!**
     *   **Volgende keren:** Voer uw naam en het ingestelde hoofdwachtwoord in om toegang te krijgen.
