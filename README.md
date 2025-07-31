@@ -29,7 +29,7 @@ De applicatie is gebouwd met duurzaamheid en prestaties in gedachten:
 
 De applicatie is ontworpen om foolproof te zijn:
 
-1.  **Start de Applicatie:** Steek de USB-stick in een Windows-computer en dubbelklik op het `run.bat`-bestand.
+1.  **Start de Applicatie:** Steek de USB-stick (Of) Op de computer met windows 10 of 11. Dubbelklik op het `run.bat`-bestand.
 2.  **Ontgrendel de Database:**
     *   **Eerste keer:** Voer uw naam in en kies een sterk **hoofdwachtwoord**. Dit wachtwoord moet u voortaan altijd gebruiken. **Vergeet dit wachtwoord niet, want het is onherstelbaar!**
     *   **Volgende keren:** Voer uw naam en het ingestelde hoofdwachtwoord in om toegang te krijgen.
