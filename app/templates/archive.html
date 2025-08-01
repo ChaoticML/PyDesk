@@ -3,12 +3,26 @@
 {% block content %}
     <h1>Archief</h1>
     
-    <div class="search-container">
+    <div class="filter-container">
         <form method="get" action="{{ url_for('main.archive') }}">
             <input type="hidden" name="user" value="{{ user }}">
             <input type="hidden" name="password" value="{{ password }}">
-            <input type="search" name="search" placeholder="Zoek in archief..." value="{{ search_query or '' }}">
-            <button type="submit">Zoek</button>
+            
+            <div class="form-group">
+                <label for="search">Zoek:</label>
+                <input type="search" id="search" name="search" placeholder="Zoek in archief..." value="{{ search_query or '' }}">
+            </div>
+
+            <div class="form-group">
+                <label for="sort">Sorteer op:</label>
+                <select id="sort" name="sort">
+                    <option value="created_at_desc" {% if sort_by == 'created_at_desc' %}selected{% endif %}>Datum (Nieuwste eerst)</option>
+                    <option value="created_at_asc" {% if sort_by == 'created_at_asc' %}selected{% endif %}>Datum (Oudste eerst)</option>
+                    <option value="priority" {% if sort_by == 'priority' %}selected{% endif %}>Prioriteit (Hoog > Laag)</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="filter-button">Toepassen</button>
         </form>
     </div>
 
@@ -16,6 +30,7 @@
         <div class="ticket-summary priority-{{ ticket.priority.lower() }}">
             <h3><a href="{{ url_for('main.view_ticket', ticket_id=ticket.id, user=user, password=password) }}">{{ ticket.title }}</a></h3>
             <p>
+                <strong>Aangemaakt:</strong> {{ ticket.created_at | datetimeformat }} |
                 <strong>Status:</strong> {{ ticket.status }} |
                 <strong>Prioriteit:</strong> {{ ticket.priority }} |
                 <strong>Aanvrager:</strong> {{ ticket.requester_name }} |
@@ -23,10 +38,6 @@
             </p>
         </div>
     {% else %}
-        {% if search_query %}
-            <p>Geen gearchiveerde tickets gevonden die overeenkomen met uw zoekopdracht.</p>
-        {% else %}
-            <p>Geen gearchiveerde tickets gevonden.</p>
-        {% endif %}
+        <p>Geen gearchiveerde tickets gevonden die aan de criteria voldoen.</p>
     {% endfor %}
 {% endblock %}
