@@ -2,8 +2,7 @@
 {% block title %}Actieve Tickets{% endblock %}
 {% block content %}
     <h1>Actieve Tickets</h1>
-
-    <!-- ZOEKBALK -->
+    
     <div class="search-container">
         <form method="get" action="{{ url_for('main.index') }}">
             <input type="hidden" name="user" value="{{ user }}">
@@ -12,9 +11,9 @@
             <button type="submit">Zoek</button>
         </form>
     </div>
-    <!-- TICKETLIJST -->
+
     {% for ticket in tickets %}
-        <div class="ticket-summary">
+        <div class="ticket-summary priority-{{ ticket.priority.lower() }}">
             <h3><a href="{{ url_for('main.view_ticket', ticket_id=ticket.id, user=user, password=password) }}">{{ ticket.title }}</a></h3>
             <p>
                 <strong>Status:</strong> {{ ticket.status }} |
