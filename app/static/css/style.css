@@ -56,7 +56,7 @@ nav a:hover {
 }
 
 /* Login Pagina */
-.welcome-container {
+.login-container {
     text-align: center;
     padding: 4em 2em;
 }
@@ -131,6 +131,17 @@ nav a:hover {
 .ticket-details .description p {
     line-height: 1.6;
     white-space: pre-wrap;
+}
+.ticket-summary.status-opgelost,
+.ticket-summary.status-gesloten {
+    opacity: 0.7;
+    background-color: #f7fafc;
+}
+
+.ticket-summary.status-opgelost h3 a,
+.ticket-summary.status-gesloten h3 a {
+    text-decoration: line-through;
+    color: #718096;
 }
 .sensitive-notes-group .warning-text {
     font-size: 0.9em;
@@ -446,4 +457,22 @@ nav a:hover {
 }
 .edit-button:hover {
     background-color: #2d3748;
+}
+
+/* Uitloggen knop */
+.logout-button {
+    background-color: #718096; /* Een andere kleur dan de shutdown knop */
+    color: white;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none; /* Belangrijk voor <a> tags */
+    display: inline-block; /* Zorgt voor correcte weergave */
+    margin-left: 1em;
+}
+.logout-button:hover {
+    background-color: #4a5568;
 }

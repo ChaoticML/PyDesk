@@ -9,7 +9,8 @@
             {% if ticket.kb_article_id %}
             <div class="linked-kb-article">
                 <strong>Gekoppeld Kennisbank Artikel:</strong>
-                <a href="{{ url_for('kb.kb_article', article_id=ticket.kb_article_id, user=user, password=password) }}">{{ ticket.kb_article_title }}</a>
+                <!-- Link naar KB artikel aangepast -->
+                <a href="{{ url_for('kb.kb_article', article_id=ticket.kb_article_id) }}">{{ ticket.kb_article_title }}</a>
             </div>
             {% endif %}
 
@@ -25,7 +26,8 @@
                         <span class="assigned-user">{{ ticket.assigned_to }}</span>
                     {% else %}
                         <span class="unassigned">Niet toegewezen</span>
-                        <form action="{{ url_for('main.assign', ticket_id=ticket.id, user=user, password=password) }}" method="post" style="display: inline-block; margin-left: 20px;">
+                        <!-- Formulier voor 'Aan mij toewijzen' aangepast -->
+                        <form action="{{ url_for('main.assign', ticket_id=ticket.id) }}" method="post" style="display: inline-block; margin-left: 20px;">
                             <button type="submit" class="assign-button">Aan mij toewijzen</button>
                         </form>
                     {% endif %}
@@ -39,15 +41,14 @@
                     <h3>Beschrijving</h3>
                     <p>{{ ticket.description }}</p>
                 </div>
+                
+                <!-- Sensitive notes weergave, let op gebruik van g.master_password -->
                 {% if ticket.sensitive_notes and ticket.status not in ['Resolved', 'Closed'] %}
                 <div class="detail-section sensitive-notes-view">
                     <h3>Vertrouwelijke Notities</h3>
                     <div class="warning-box">
-                        {% if 'DECRYPTIE MISLUKT' in ticket.sensitive_notes %}
-                            <p style="color: red; font-weight: bold;">{{ ticket.sensitive_notes }}</p>
-                        {% else %}
-                            <p>{{ ticket.sensitive_notes }}</p>
-                        {% endif %}
+                        <!-- De decryptie gebeurt in de route, hier tonen we alleen het resultaat -->
+                        <p>{{ ticket.sensitive_notes }}</p>
                     </div>
                 </div>
                 {% endif %}
@@ -57,7 +58,8 @@
         <div class="ticket-sidebar">
             <div class="management-panel">
                 <h3>Ticket Beheren</h3>
-                <form action="{{ url_for('main.update', ticket_id=ticket.id, user=user, password=password) }}" method="post" class="ticket-form">
+                <!-- Formulier voor Status Wijzigen en Reactie Toevoegen -->
+                <form action="{{ url_for('main.update', ticket_id=ticket.id) }}" method="post" class="ticket-form">
                     <div class="form-group">
                         <label for="status">Status Wijzigen:</label>
                         <select id="status" name="status">
@@ -69,6 +71,7 @@
                     </div>
                     <div class="form-group">
                         <label for="comment">Reactie Toevoegen:</label>
+                        <!-- Template selectie blijft hetzelfde -->
                         <select id="template_select" onchange="applyTemplate()">
                             <option value="">Kies een sjabloon...</option>
                             {% for t in templates %}
@@ -82,13 +85,14 @@
 
                 <hr>
 
-                <form action="{{ url_for('main.link_kb', ticket_id=ticket.id, user=user, password=password) }}" method="post" class="ticket-form">
+                <!-- Formulier voor Koppel Kennisbank Artikel -->
+                <form action="{{ url_for('main.link_kb', ticket_id=ticket.id) }}" method="post" class="ticket-form">
                     <div class="form-group">
                         <label for="kb_article_id">Koppel Kennisbank Artikel:</label>
                         <select id="kb_article_id" name="kb_article_id">
                             <option value="">Selecteer een artikel...</option>
-                            {% for article in kb_articles %}
-                                <option value="{{ article.id }}" {% if ticket.kb_article_id == article.id %}selected{% endif %}>{{ article.category }} - {{ article.title }}</option>
+                            {% for article_option in kb_articles %}
+                                <option value="{{ article_option.id }}" {% if ticket.kb_article_id == article_option.id %}selected{% endif %}>{{ article_option.category }} - {{ article_option.title }}</option>
                             {% endfor %}
                         </select>
                     </div>

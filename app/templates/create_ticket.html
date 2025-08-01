@@ -2,14 +2,16 @@
 {% block title %}Nieuw Ticket Aanmaken{% endblock %}
 {% block content %}
     <h1>Nieuw Ticket Aanmaken</h1>
-    <form method="post" class="ticket-form" action="{{ url_for('main.create', user=user, password=password) }}">
+    
+    <!-- De form action bevat geen user/password parameters meer -->
+    <form method="post" class="ticket-form" action="{{ url_for('main.create') }}">
         <div class="form-group">
             <label for="requester_name">Naam Aanvrager:</label>
             <input type="text" id="requester_name" name="requester_name" required>
         </div>
         <div class="form-group">
             <label for="requester_phone">Telefoonnummer:</label>
-            <input type="text" id="requester_phone" name="requester_phone">
+            <input type="tel" id="requester_phone" name="requester_phone">
         </div>
         <div class="form-group">
             <label for="requester_email">E-mail:</label>
@@ -25,7 +27,7 @@
         </div>
         <div class="form-group sensitive-notes-group">
             <label for="sensitive_notes">Vertrouwelijke Notities (bijv. Wachtwoorden, IP-adressen):</label>
-            <div class="warning-text">Deze gegevens worden versleuteld opgeslagen.</div>
+            <div class="warning-text">Deze gegevens worden versleuteld opgeslagen en niet meegeprint.</div>
             <textarea id="sensitive_notes" name="sensitive_notes" rows="4"></textarea>
         </div>
         <div class="form-group">

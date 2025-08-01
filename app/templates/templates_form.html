@@ -2,7 +2,9 @@
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
-    <form method="post" class="ticket-form">
+    
+    <!-- Dynamische action URL voor aanmaken of bewerken van sjablonen -->
+    <form method="post" class="ticket-form" action="{{ url_for('templates.templates_create') if not template else url_for('templates.templates_edit', template_id=template.id) }}">
         <div class="form-group">
             <label for="title">Titel van Sjabloon:</label>
             <input type="text" id="title" name="title" value="{{ template.title if template else '' }}" required>

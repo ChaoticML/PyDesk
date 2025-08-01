@@ -3,18 +3,22 @@
 {% block content %}
     <div class="kb-header">
         <h1>Kennisbank</h1>
-        <a href="{{ url_for('kb.kb_create', user=user, password=password) }}" class="submit-button">Nieuw Artikel Aanmaken</a>
+        <!-- Link naar nieuw artikel aangepast -->
+        <a href="{{ url_for('kb.kb_create') }}" class="submit-button">Nieuw Artikel Aanmaken</a>
     </div>
+    
     {% for category, articles in grouped_articles.items() %}
         <div class="kb-category-box">
             <h2>{{ category }}</h2>
             <ul class="kb-article-list">
                 {% for article in articles %}
-                    <li><a href="{{ url_for('kb.kb_article', article_id=article.id, user=user, password=password) }}">{{ article.title }}</a></li>
+                    <!-- Link naar individueel artikel aangepast -->
+                    <li><a href="{{ url_for('kb.kb_article', article_id=article.id) }}">{{ article.title }}</a></li>
                 {% endfor %}
             </ul>
         </div>
     {% else %}
-        <p>Geen kennisbank artikelen gevonden. <a href="{{ url_for('kb.kb_create', user=user, password=password) }}">Maak de eerste aan!</a></p>
+        <!-- Link in de else-clausule ook aangepast -->
+        <p>Geen kennisbank artikelen gevonden. <a href="{{ url_for('kb.kb_create') }}">Maak de eerste aan!</a></p>
     {% endfor %}
 {% endblock %}

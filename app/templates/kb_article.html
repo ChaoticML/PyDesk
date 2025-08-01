@@ -5,16 +5,21 @@
         <div>
             <span class="kb-article-category">{{ article.category }}</span>
             <h1>{{ article.title }}</h1>
-            <span class="kb-article-meta">Laatst bijgewerkt: {{ article.updated_at }}</span>
+            <!-- Zorg ervoor dat datetimeformat ook hier gebruikt wordt indien van toepassing -->
+            <span class="kb-article-meta">Laatst bijgewerkt: {{ article.updated_at | datetimeformat }}</span>
         </div>
         <div class="kb-article-actions">
-            <a href="{{ url_for('kb.kb_edit', article_id=article.id, user=user, password=password) }}" class="submit-button">Bewerken</a>
-            <form action="{{ url_for('kb.kb_delete', article_id=article.id, user=user, password=password) }}" method="post" onsubmit="return confirm('Weet u zeker dat u dit artikel wilt verwijderen?');">
+            <!-- Link naar bewerken aangepast -->
+            <a href="{{ url_for('kb.kb_edit', article_id=article.id) }}" class="submit-button">Bewerken</a>
+            
+            <!-- Formulier actie aangepast -->
+            <form action="{{ url_for('kb.kb_delete', article_id=article.id) }}" method="post" onsubmit="return confirm('Weet u zeker dat u dit artikel wilt verwijderen?');">
                 <button type="submit" class="delete-button">Verwijderen</button>
             </form>
         </div>
     </div>
     <div class="kb-article-content">
+        <!-- Je kunt hier ook Jinja filters toepassen indien nodig voor de content -->
         {{ article.content }}
     </div>
 {% endblock %}
