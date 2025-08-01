@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from collections import defaultdict
 from . import database
 
+# --- Kennisbank Blueprint (ongewijzigd) ---
 bp = Blueprint('kb', __name__, url_prefix='/kb')
 
 @bp.route('/')
@@ -51,3 +52,52 @@ def kb_delete(article_id):
     if not user or not password: return redirect(url_for('main.welcome'))
     database.delete_kb_article(article_id)
     return redirect(url_for('kb.kb_index', user=user, password=password))
+
+# --- NIEUWE BLUEPRINT VOOR SJABLONEN ---
+bp_templates = Blueprint('templates', __name__, url_prefix='/templates')
+
+@bp_templates.route('/')
+def templates_index():
+    user = request.args.get('user')
+    password = request.args.get('password')
+    if not user or not password: return redirect(url_for('main.welcome'))
+    
+    templates = database.get_all_templates()
+    return render_template('templates_index.html', templates=templates, user=user, password=password)
+
+@bp_templates.route('/create', methods=['GET', 'POST'])
+def templates_create():
+    user = request.args.get('user')
+    password = request.args.get('password')
+    if not user or not password: return redirect(url_for('main.welcome'))
+
+    if request.method == 'POST':
+        database.create_template(request.form['title'], request.form['content'])
+        flash("Sjabloon succesvol aangemaakt.", 'success')
+        return redirect(url_for('templates.templates_index', user=user, password=password))
+    
+    return render_template('templates_form.html', user=user, password=password, template=None, title="Nieuw Sjabloon Aanmaken")
+
+@bp_templates.route('/<int:template_id>/edit', methods=['GET', 'POST'])
+def templates_edit(template_id):
+    user = request.args.get('user')
+    password = request.args.get('password')
+    if not user or not password: return redirect(url_for('main.welcome'))
+
+    template = database.get_template_by_id(template_id)
+    if request.method == 'POST':
+        database.update_template(template_id, request.form['title'], request.form['content'])
+        flash("Sjabloon succesvol bijgewerkt.", 'success')
+        return redirect(url_for('templates.templates_index', user=user, password=password))
+        
+    return render_template('templates_form.html', user=user, password=password, template=template, title="Sjabloon Bewerken")
+
+@bp_templates.route('/<int:template_id>/delete', methods=['POST'])
+def templates_delete(template_id):
+    user = request.args.get('user')
+    password = request.args.get('password')
+    if not user or not password: return redirect(url_for('main.welcome'))
+
+    database.delete_template(template_id)
+    flash("Sjabloon succesvol verwijderd.", 'success')
+    return redirect(url_for('templates.templates_index', user=user, password=password))

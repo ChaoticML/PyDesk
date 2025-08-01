@@ -8,18 +8,15 @@ def create_app():
     
     app.config['SECRET_KEY'] = 'een-zeer-geheime-en-willekeurige-sleutel-voor-deze-app'
 
-    # Registreer de teardown context voor de database
     @app.teardown_appcontext
     def close_db(e=None):
         db = g.pop('db', None)
         if db is not None:
             db.close()
             
-    # Initialiseer de database bij het starten
     with app.app_context():
         database.init_db()
 
-    # --- REGISTREER HET TEMPLATE FILTER ---
     app.jinja_env.filters['datetimeformat'] = utils.format_datetime
 
     # Importeer en registreer de blueprints
@@ -27,5 +24,9 @@ def create_app():
     app.register_blueprint(routes_main.bp)
     app.register_blueprint(routes_kb.bp)
     app.register_blueprint(routes_reports.bp)
+    
+    # REGISTREER DE NIEUWE SJABLONEN BLUEPRINT
+    from .routes_kb import bp_templates
+    app.register_blueprint(bp_templates)
 
     return app

@@ -132,22 +132,43 @@ def view_ticket(ticket_id):
     user = request.args.get('user')
     password = request.args.get('password')
     if not user or not password: return redirect(url_for('main.welcome'))
-    ticket_data = get_db().execute('SELECT * FROM tickets WHERE id = ?', (ticket_id,)).fetchone()
+    
+    db = get_db()
+    # Gebruik een JOIN om direct de titel van het gekoppelde KB-artikel op te halen
+    ticket_data = db.execute('''
+        SELECT t.*, k.title as kb_article_title 
+        FROM tickets t 
+        LEFT JOIN kb_articles k ON t.kb_article_id = k.id 
+        WHERE t.id = ?
+    ''', (ticket_id,)).fetchone()
+    
     if not ticket_data:
         flash(f'Ticket #{ticket_id} niet gevonden.', 'error')
         return redirect(url_for('main.index', user=user, password=password))
+    
     ticket = dict(ticket_data)
     if ticket.get('sensitive_notes'):
         ticket['sensitive_notes'] = utils.decrypt_data(ticket['sensitive_notes'], password)
-    comments = get_db().execute('SELECT * FROM comments WHERE ticket_id = ? ORDER BY created_at ASC', (ticket_id,)).fetchall()
-    return render_template('view_ticket.html', ticket=ticket, comments=comments, user=user, password=password)
+    
+    comments = db.execute('SELECT * FROM comments WHERE ticket_id = ? ORDER BY created_at ASC', (ticket_id,)).fetchall()
+    
+    # Haal alle sjablonen en KB-artikelen op voor de dropdowns
+    templates = database.get_all_templates()
+    kb_articles = database.get_all_kb_articles()
+
+    return render_template('view_ticket.html', ticket=ticket, comments=comments, user=user, password=password, templates=templates, kb_articles=kb_articles)
 
 @bp.route('/ticket/<int:ticket_id>/assign', methods=['POST'])
 def assign(ticket_id):
     user = request.args.get('user')
     password = request.args.get('password')
     if not user or not password: return redirect(url_for('main.welcome'))
-    database.assign_ticket(ticket_id, user)
+    
+    # Haal de huidige toegewezen persoon op voor de logging
+    ticket = get_db().execute('SELECT assigned_to FROM tickets WHERE id = ?', (ticket_id,)).fetchone()
+    old_assignee = ticket['assigned_to'] if ticket else None
+
+    database.assign_ticket(ticket_id, user, old_assignee)
     flash(f'Ticket #{ticket_id} toegewezen aan {user}.', 'success')
     return redirect(url_for('main.view_ticket', ticket_id=ticket_id, user=user, password=password))
 
@@ -156,6 +177,34 @@ def update(ticket_id):
     user = request.args.get('user')
     password = request.args.get('password')
     if not user or not password: return redirect(url_for('main.welcome'))
-    database.update_ticket(ticket_id, request.form['status'], request.form['comment'], user)
+    
+    # Haal de huidige status op voor de logging
+    ticket = get_db().execute('SELECT status FROM tickets WHERE id = ?', (ticket_id,)).fetchone()
+    old_status = ticket['status'] if ticket else 'Onbekend'
+
+    new_status = request.form['status']
+    comment = request.form['comment']
+    database.update_ticket(ticket_id, new_status, comment, user, old_status)
     flash(f'Ticket #{ticket_id} succesvol bijgewerkt.', 'success')
+    return redirect(url_for('main.view_ticket', ticket_id=ticket_id, user=user, password=password))
+
+# --- NIEUWE ROUTE VOOR KB-KOPPELING ---
+@bp.route('/ticket/<int:ticket_id>/link_kb', methods=['POST'])
+def link_kb(ticket_id):
+    user = request.args.get('user')
+    password = request.args.get('password')
+    if not user or not password: return redirect(url_for('main.welcome'))
+
+    kb_article_id = request.form.get('kb_article_id')
+    if kb_article_id:
+        # Haal de titel op voor de logging
+        kb_article = database.get_kb_article_by_id(kb_article_id)
+        if kb_article:
+            database.link_kb_article(ticket_id, kb_article_id, kb_article['title'], user)
+            flash(f"Artikel '{kb_article['title']}' gekoppeld aan ticket.", 'success')
+        else:
+            flash("Geselecteerd kennisbank artikel niet gevonden.", 'error')
+    else:
+        flash("Geen kennisbank artikel geselecteerd.", 'error')
+
     return redirect(url_for('main.view_ticket', ticket_id=ticket_id, user=user, password=password))
