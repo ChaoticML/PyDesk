@@ -2,7 +2,17 @@
 {% block title %}Actieve Tickets{% endblock %}
 {% block content %}
     <h1>Actieve Tickets</h1>
-    <p>Deze pagina toont alle tickets die nog niet 'Opgelost' of 'Gesloten' zijn.</p>
+
+    <!-- ZOEKBALK -->
+    <div class="search-container">
+        <form method="get" action="{{ url_for('main.index') }}">
+            <input type="hidden" name="user" value="{{ user }}">
+            <input type="hidden" name="password" value="{{ password }}">
+            <input type="search" name="search" placeholder="Zoek in tickets..." value="{{ search_query or '' }}">
+            <button type="submit">Zoek</button>
+        </form>
+    </div>
+    <!-- TICKETLIJST -->
     {% for ticket in tickets %}
         <div class="ticket-summary">
             <h3><a href="{{ url_for('main.view_ticket', ticket_id=ticket.id, user=user, password=password) }}">{{ ticket.title }}</a></h3>
@@ -14,6 +24,10 @@
             </p>
         </div>
     {% else %}
-        <p>Geen actieve tickets gevonden. Goed werk! <a href="{{ url_for('main.create', user=user, password=password) }}">Maak de eerste aan!</a></p>
+        {% if search_query %}
+            <p>Geen tickets gevonden die overeenkomen met uw zoekopdracht.</p>
+        {% else %}
+            <p>Geen actieve tickets gevonden. Goed werk! <a href="{{ url_for('main.create', user=user, password=password) }}">Maak de eerste aan!</a></p>
+        {% endif %}
     {% endfor %}
 {% endblock %}

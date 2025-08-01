@@ -8,8 +8,10 @@
                 <div class="detail-section">
                     <p><strong>Status:</strong> {{ ticket.status }}</p>
                     <p><strong>Prioriteit:</strong> {{ ticket.priority }}</p>
-                    <p><strong>Aangemaakt:</strong> {{ ticket.created_at }}</p>
+                    <!-- DATUMFORMATTERING TOEGEPAST -->
+                    <p><strong>Aangemaakt:</strong> {{ ticket.created_at | datetimeformat }}</p>
                 </div>
+                <!-- ... (rest van de ticket details) ... -->
                 <div class="detail-section assignment-section">
                     <strong>Toegewezen aan:</strong>
                     {% if ticket.assigned_to %}
@@ -45,6 +47,7 @@
             </div>
         </div>
         <div class="ticket-sidebar">
+            <!-- ... (management panel) ... -->
             <div class="management-panel">
                 <h3>Ticket Beheren</h3>
                 <form action="{{ url_for('main.update', ticket_id=ticket.id, user=user, password=password) }}" method="post" class="ticket-form">
@@ -69,7 +72,8 @@
                 {% for comment in comments %}
                     <div class="comment-item">
                         <p class="comment-body">{{ comment.comment_text }}</p>
-                        <p class="comment-meta">door <strong>{{ comment.author }}</strong> op {{ comment.created_at }}</p>
+                        <!-- DATUMFORMATTERING TOEGEPAST -->
+                        <p class="comment-meta">door <strong>{{ comment.author }}</strong> op {{ comment.created_at | datetimeformat }}</p>
                     </div>
                 {% else %}
                     <p>Nog geen geschiedenis.</p>

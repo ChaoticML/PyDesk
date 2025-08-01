@@ -2,7 +2,17 @@
 {% block title %}Archief{% endblock %}
 {% block content %}
     <h1>Archief</h1>
-    <p>Deze pagina toont alle tickets die zijn gemarkeerd als 'Opgelost' of 'Gesloten'.</p>
+    
+    <!-- ZOEKBALK -->
+    <div class="search-container">
+        <form method="get" action="{{ url_for('main.archive') }}">
+            <input type="hidden" name="user" value="{{ user }}">
+            <input type="hidden" name="password" value="{{ password }}">
+            <input type="search" name="search" placeholder="Zoek in archief..." value="{{ search_query or '' }}">
+            <button type="submit">Zoek</button>
+        </form>
+    </div>
+    <!-- TICKETLIJST -->
     {% for ticket in tickets %}
         <div class="ticket-summary">
             <h3><a href="{{ url_for('main.view_ticket', ticket_id=ticket.id, user=user, password=password) }}">{{ ticket.title }}</a></h3>
@@ -14,6 +24,10 @@
             </p>
         </div>
     {% else %}
-        <p>Geen gearchiveerde tickets gevonden.</p>
+        {% if search_query %}
+            <p>Geen gearchiveerde tickets gevonden die overeenkomen met uw zoekopdracht.</p>
+        {% else %}
+            <p>Geen gearchiveerde tickets gevonden.</p>
+        {% endif %}
     {% endfor %}
 {% endblock %}

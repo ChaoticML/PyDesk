@@ -1,0 +1,21 @@
+# Virtuele Omgeving van Python/uv
+.venv/
+venv/
+
+# PyInstaller build-artefacten
+build/
+dist/
+*.spec
+
+# Python cache bestanden
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Live applicatiedata
+app/data/
+
+# IDE / Editor specifieke bestanden
+.vscode/
+.idea/
