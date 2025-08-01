@@ -12,6 +12,7 @@ def get_db():
         g.db.row_factory = sqlite3.Row
     return g.db
 
+# ... (shutdown en welcome functies blijven ongewijzigd) ...
 def shutdown_server():
     os._exit(0)
 
@@ -24,51 +25,94 @@ def shutdown():
 def welcome():
     return render_template('login.html')
 
+# --- Dynamische Query voor Actieve Tickets ---
 @bp.route('/tickets', methods=['POST', 'GET'])
 def index():
     user = request.form.get('user') or request.args.get('user')
     password = request.form.get('password') or request.args.get('password')
     if not user or not password: return redirect(url_for('main.welcome'))
     
-    # --- ZOEKFUNCTIONALITEIT LOGICA ---
+    # Haal alle filter- en sorteeropties uit de URL
     search_query = request.args.get('search', '')
+    sort_by = request.args.get('sort', 'created_at_desc')
+    filter_by = request.args.get('filter', 'all')
+
     db = get_db()
     
+    # Bouw de SQL query dynamisch op
     base_query = "SELECT * FROM tickets WHERE status NOT IN ('Resolved', 'Closed')"
     params = []
     
+    # Filter logica
+    if filter_by == 'mine':
+        base_query += " AND assigned_to = ?"
+        params.append(user)
+    elif filter_by == 'unassigned':
+        base_query += " AND assigned_to IS NULL"
+
+    # Zoek logica
     if search_query:
         base_query += " AND (title LIKE ? OR description LIKE ?)"
         params.extend([f'%{search_query}%', f'%{search_query}%'])
         
-    base_query += " ORDER BY created_at DESC"
+    # Sorteer logica
+    sort_options = {
+        'created_at_desc': 'ORDER BY created_at DESC',
+        'created_at_asc': 'ORDER BY created_at ASC',
+        'priority': "ORDER BY CASE priority WHEN 'Hoog' THEN 1 WHEN 'Gemiddeld' THEN 2 WHEN 'Laag' THEN 3 END ASC",
+        'status': 'ORDER BY status ASC'
+    }
+    base_query += " " + sort_options.get(sort_by, 'ORDER BY created_at DESC') # Veilige fallback
+
     tickets = db.execute(base_query, params).fetchall()
 
-    return render_template('index.html', tickets=tickets, user=user, password=password, search_query=search_query)
+    return render_template('index.html', tickets=tickets, user=user, password=password, 
+                           search_query=search_query, sort_by=sort_by, filter_by=filter_by)
 
+# --- Dynamische Query voor Archief ---
 @bp.route('/archive')
 def archive():
     user = request.args.get('user')
     password = request.args.get('password')
     if not user or not password: return redirect(url_for('main.welcome'))
     
-    # --- ZOEKFUNCTIONALITEIT LOGICA ---
+    # Haal alle filter- en sorteeropties uit de URL
     search_query = request.args.get('search', '')
+    sort_by = request.args.get('sort', 'created_at_desc')
+    filter_by = request.args.get('filter', 'all')
+    
     db = get_db()
     
+    # Bouw de SQL query dynamisch op
     base_query = "SELECT * FROM tickets WHERE status IN ('Resolved', 'Closed')"
     params = []
+
+    # Filter logica
+    if filter_by == 'mine':
+        base_query += " AND assigned_to = ?"
+        params.append(user)
     
+    # Zoek logica
     if search_query:
         base_query += " AND (title LIKE ? OR description LIKE ?)"
         params.extend([f'%{search_query}%', f'%{search_query}%'])
         
-    base_query += " ORDER BY created_at DESC"
+    # Sorteer logica
+    sort_options = {
+        'created_at_desc': 'ORDER BY created_at DESC',
+        'created_at_asc': 'ORDER BY created_at ASC',
+        'priority': "ORDER BY CASE priority WHEN 'Hoog' THEN 1 WHEN 'Gemiddeld' THEN 2 WHEN 'Laag' THEN 3 END ASC",
+        'status': 'ORDER BY status ASC'
+    }
+    base_query += " " + sort_options.get(sort_by, 'ORDER BY created_at DESC')
+
     archived_tickets = db.execute(base_query, params).fetchall()
 
-    return render_template('archive.html', tickets=archived_tickets, user=user, password=password, search_query=search_query)
+    return render_template('archive.html', tickets=archived_tickets, user=user, password=password,
+                           search_query=search_query, sort_by=sort_by, filter_by=filter_by)
 
-# ... (create, view_ticket, assign, update functies blijven hetzelfde) ...
+
+# ... (create, view_ticket, assign, update functies) ...
 @bp.route('/create', methods=['GET', 'POST'])
 def create():
     user = request.args.get('user')
@@ -76,7 +120,7 @@ def create():
     if not user or not password: return redirect(url_for('main.welcome'))
     if request.method == 'POST':
         encrypted_notes = utils.encrypt_data(request.form['sensitive_notes'], password)
-        ticket_id = database.create_ticket(request.form['title'], request.form['description'], request.form['requester_name'], request.form['requester_email'], request.form['requester_phone'], request.form.get('priority', 'Medium'), encrypted_notes)
+        ticket_id = database.create_ticket(request.form['title'], request.form['description'], request.form['requester_name'], request.form['requester_email'], request.form['requester_phone'], request.form.get('priority', 'Gemiddeld'), encrypted_notes)
         new_ticket_data = get_db().execute('SELECT * FROM tickets WHERE id = ?', (ticket_id,)).fetchone()
         if new_ticket_data: printer.print_new_ticket(new_ticket_data)
         flash(f'Ticket #{ticket_id} succesvol aangemaakt!', 'success')
