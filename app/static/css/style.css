@@ -385,3 +385,65 @@ nav a:hover {
 .flash-close:hover {
     opacity: 1;
 }
+
+/* Geschiedenis / Audit Trail */
+.comment-item.event-event .comment-body {
+    font-style: italic;
+    color: #718096;
+}
+
+/* Gekoppeld KB Artikel */
+.linked-kb-article {
+    background-color: #ebf8ff;
+    border: 1px solid #90cdf4;
+    border-left: 5px solid #4299e1;
+    padding: 1em;
+    margin-bottom: 2em;
+    border-radius: 4px;
+}
+.linked-kb-article a {
+    color: #2b6cb0;
+    font-weight: bold;
+    text-decoration: none;
+}
+.linked-kb-article a:hover {
+    text-decoration: underline;
+}
+
+/* Sjablonen Pagina */
+.template-list .template-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 1.5em;
+}
+.template-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f7fafc;
+    padding: 0.8em 1.5em;
+    border-bottom: 1px solid #e2e8f0;
+}
+.template-item-header h3 {
+    margin: 0;
+}
+.template-item-actions {
+    display: flex;
+    gap: 1em;
+}
+.template-content {
+    padding: 1.5em;
+    white-space: pre-wrap;
+    background-color: #ffffff;
+}
+.edit-button {
+    background-color: #4a5568;
+    color: white;
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+.edit-button:hover {
+    background-color: #2d3748;
+}
