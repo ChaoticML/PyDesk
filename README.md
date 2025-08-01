@@ -1,7 +1,7 @@
 # HESK Lite - Standalone Helpdesk Applicatie
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python)
-![Flask](https://img.shields.io/badge/Flask-2.0-000000?logo=flask)
+![Flask](https://img.shields.io/badge/Flask-3.1-000000?logo=flask)
 ![SQLite](https://img.shields.io/badge/SQLite-3-003B57?logo=sqlite)
 ![Status](https://img.shields.io/badge/Status-Actieve%20Ontwikkeling-blue)
 
