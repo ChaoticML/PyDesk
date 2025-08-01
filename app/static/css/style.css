@@ -19,7 +19,6 @@ h1 {
     margin-bottom: 1em;
 }
 
-
 /* Navigatiebalk */
 nav {
     background-color: #ffffff;
@@ -56,17 +55,16 @@ nav a:hover {
     align-items: center;
 }
 
-
 /* Login Pagina */
 .welcome-container {
     text-align: center;
     padding: 4em 2em;
 }
 
-
 /* Ticket Lijst */
 .ticket-summary {
     border: 1px solid #e2e8f0;
+    border-left: 5px solid #a0aec0;
     padding: 1em 1.5em;
     margin-bottom: 1em;
     border-radius: 5px;
@@ -79,7 +77,6 @@ nav a:hover {
     color: #2b6cb0;
     text-decoration: none;
 }
-
 
 /* Algemene Formulieren */
 .ticket-form .form-group {
@@ -114,7 +111,6 @@ nav a:hover {
 .ticket-form .submit-button:hover {
     background-color: #2c5282;
 }
-
 
 /* Ticket Detailpagina */
 .ticket-view-grid {
@@ -175,7 +171,6 @@ nav a:hover {
     color: #718096;
     margin: 0;
 }
-
 
 /* Kennisbank */
 .kb-header {
@@ -241,7 +236,6 @@ nav a:hover {
     white-space: pre-wrap;
 }
 
-
 /* Rapporten Pagina */
 .report-grid {
     display: grid;
@@ -266,20 +260,8 @@ nav a:hover {
 /* Diverse Componenten */
 .flash-messages {
     padding: 0;
-    margin: 0 0 1em 0;
+    margin: 0;
     list-style: none;
-}
-.flash {
-    padding: 1em;
-    margin-bottom: 1em;
-    border-radius: 4px;
-    color: #fff;
-}
-.flash.success {
-    background-color: #38a169;
-}
-.flash.error {
-    background-color: #c53030;
 }
 .search-container {
     margin-bottom: 2em;
@@ -342,12 +324,24 @@ nav a:hover {
 .shutdown-button:hover {
     background-color: #9b2c2c;
 }
-.flash-messages {
-    padding: 0;
-    margin: 0 0 1em 0;
-    list-style: none;
+
+
+/* Visuele Indicatoren voor Ticket Prioriteit */
+.ticket-summary.priority-hoog {
+    border-left-color: #c53030; /* Rood */
 }
+.ticket-summary.priority-gemiddeld {
+    border-left-color: #dd6b20; /* Oranje */
+}
+.ticket-summary.priority-laag {
+    border-left-color: #38a169; /* Groen */
+}
+
+/* Flash Messages */
 .flash {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 1em;
     margin-bottom: 1em;
     border-radius: 4px;
@@ -358,4 +352,17 @@ nav a:hover {
 }
 .flash.error {
     background-color: #c53030;
+}
+.flash-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5em;
+    line-height: 1;
+    cursor: pointer;
+    margin-left: 1em;
+    opacity: 0.7;
+}
+.flash-close:hover {
+    opacity: 1;
 }
