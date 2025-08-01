@@ -2,7 +2,9 @@
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
-    <form method="post" class="ticket-form">
+    
+    <!-- Dynamische action URL: genereert de juiste URL voor aanmaken of bewerken -->
+    <form method="post" class="ticket-form" action="{{ url_for('kb.kb_create') if not article else url_for('kb.kb_edit', article_id=article.id) }}">
         <div class="form-group">
             <label for="title">Titel:</label>
             <input type="text" id="title" name="title" value="{{ article.title if article else '' }}" required>

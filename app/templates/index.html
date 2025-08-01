@@ -1,12 +1,13 @@
 {% extends 'layout.html' %}
 {% block title %}Actieve Tickets{% endblock %}
+
 {% block content %}
     <h1>Actieve Tickets</h1>
     
     <div class="filter-container">
+        <!-- Het formulier verstuurt geen verborgen user/password velden meer -->
         <form method="get" action="{{ url_for('main.index') }}">
-            <input type="hidden" name="user" value="{{ user }}">
-            <input type="hidden" name="password" value="{{ password }}">
+            <!-- VERWIJDERD: De hidden inputs voor user en password zijn niet meer nodig. -->
             
             <div class="form-group">
                 <label for="search">Zoek:</label>
@@ -37,17 +38,21 @@
     </div>
 
     {% for ticket in tickets %}
-        <div class="ticket-summary priority-{{ ticket.priority.lower() }}">
-            <h3><a href="{{ url_for('main.view_ticket', ticket_id=ticket.id, user=user, password=password) }}">{{ ticket.title }}</a></h3>
+        <!-- Ik voeg een extra class toe voor de status, handig voor styling -->
+        <div class="ticket-summary priority-{{ ticket.priority.lower() }} status-{{ ticket.status | lower | replace(' ', '-') }}">
+            <!-- De link naar view_ticket bevat geen user/password parameters meer -->
+            <h3><a href="{{ url_for('main.view_ticket', ticket_id=ticket.id) }}">#{{ ticket.id }} - {{ ticket.title }}</a></h3>
             <p>
-                <strong>Aangemaakt:</strong> {{ ticket.created_at | datetimeformat }} |
                 <strong>Status:</strong> {{ ticket.status }} |
                 <strong>Prioriteit:</strong> {{ ticket.priority }} |
-                <strong>Aanvrager:</strong> {{ ticket.requester_name }} |
+                <strong>Aanvrager:</strong> {{ ticket.requester_name }}
+            </p>
+            <p>
+                <strong>Aangemaakt:</strong> {{ ticket.created_at | datetimeformat }} |
                 <strong>Toegewezen aan:</strong> {% if ticket.assigned_to %}{{ ticket.assigned_to }}{% else %}Niemand{% endif %}
             </p>
         </div>
     {% else %}
-        <p>Geen tickets gevonden die aan de criteria voldoen.</p>
+        <p>Geen actieve tickets gevonden die aan de criteria voldoen.</p>
     {% endfor %}
 {% endblock %}

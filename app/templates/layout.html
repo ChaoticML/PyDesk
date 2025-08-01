@@ -9,26 +9,39 @@
 <body>
     <nav>
         <div class="nav-container">
+            <!-- Brand link, geen user/password nodig -->
             <a class="nav-brand" href="{{ url_for('main.welcome') }}">HESK Lite</a>
-            {% if user and user != 'Guest' %}
+            
+            <!-- De hele navigatie sectie moet alleen getoond worden als de gebruiker is ingelogd -->
+            {% if g.user %}
             <div class="nav-links">
-                <a href="{{ url_for('main.index', user=user, password=password) }}">Actieve Tickets</a>
-                <a href="{{ url_for('main.archive', user=user, password=password) }}">Archief</a>
-                <a href="{{ url_for('kb.kb_index', user=user, password=password) }}">Kennisbank</a>
-                <a href="{{ url_for('templates.templates_index', user=user, password=password) }}">Sjablonen</a>
-                <a href="{{ url_for('reports.reports_index', user=user, password=password) }}">Rapporten</a>
-                <a href="{{ url_for('main.create', user=user, password=password) }}">Nieuw Ticket</a>
+                <!-- Alle links naar routes binnen de applicatie verwijderen user/password parameters -->
+                <a href="{{ url_for('main.index') }}">Actieve Tickets</a>
+                <a href="{{ url_for('main.archive') }}">Archief</a>
+                <a href="{{ url_for('kb.kb_index') }}">Kennisbank</a>
+                <a href="{{ url_for('templates.templates_index') }}">Sjablonen</a>
+                <a href="{{ url_for('reports.reports_index') }}">Rapporten</a>
+                <a href="{{ url_for('main.create') }}">Nieuw Ticket</a>
             </div>
             <div class="nav-user">
-                <span>Welkom, {{ user }}</span>
+                <!-- Gebruik g.user in plaats van de doorgegeven 'user' variabele -->
+                <span>Welkom, {{ g.user }}</span>
+                
+                <!-- De shutdown link heeft geen user/password parameters nodig -->
                 <form action="{{ url_for('main.shutdown') }}" method="get" onsubmit="return confirm('Weet u zeker dat u de applicatie wilt afsluiten?');" style="display: inline-block; margin-left: 1em;">
                     <button type="submit" class="shutdown-button">Afsluiten</button>
                 </form>
+                
+                <!-- Voeg hier een logout knop toe voor een betere UX -->
+                <a href="{{ url_for('auth.logout') }}" class="logout-button">Uitloggen</a>
+
             </div>
             {% endif %}
         </div>
     </nav>
+    
     <main class="content">
+        <!-- Flash berichten worden beheerd door Flask en zijn al correct weergegeven -->
         <div class="flash-messages">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}

@@ -3,26 +3,33 @@
 {% block content %}
     <div class="kb-header">
         <h1>Sjablonen Beheren</h1>
-        <a href="{{ url_for('templates.templates_create', user=user, password=password) }}" class="submit-button">Nieuw Sjabloon Aanmaken</a>
+        <!-- Link naar nieuw sjabloon aangemaakt, zonder user/password parameters -->
+        <a href="{{ url_for('templates.templates_create') }}" class="submit-button">Nieuw Sjabloon Aanmaken</a>
     </div>
+    
     <div class="template-list">
         {% for template in templates %}
             <div class="template-item">
                 <div class="template-item-header">
                     <h3>{{ template.title }}</h3>
                     <div class="template-item-actions">
-                        <a href="{{ url_for('templates.templates_edit', template_id=template.id, user=user, password=password) }}" class="edit-button">Bewerken</a>
-                        <form action="{{ url_for('templates.templates_delete', template_id=template.id, user=user, password=password) }}" method="post" onsubmit="return confirm('Weet u zeker dat u dit sjabloon wilt verwijderen?');">
+                        <!-- Link naar sjabloon bewerken aangepast -->
+                        <a href="{{ url_for('templates.templates_edit', template_id=template.id) }}" class="edit-button">Bewerken</a>
+                        
+                        <!-- Formulier actie voor verwijderen aangepast -->
+                        <form action="{{ url_for('templates.templates_delete', template_id=template.id) }}" method="post" onsubmit="return confirm('Weet u zeker dat u dit sjabloon wilt verwijderen?');">
                             <button type="submit" class="delete-button">Verwijderen</button>
                         </form>
                     </div>
                 </div>
                 <div class="template-content">
+                    <!-- Optioneel: voeg een filter toe voor de inhoud als die veel HTML kan bevatten -->
                     {{ template.content }}
                 </div>
             </div>
         {% else %}
-            <p>Geen sjablonen gevonden. <a href="{{ url_for('templates.templates_create', user=user, password=password) }}">Maak de eerste aan!</a></p>
+            <!-- Link in de else-clausule ook aangepast -->
+            <p>Geen sjablonen gevonden. <a href="{{ url_for('templates.templates_create') }}">Maak de eerste aan!</a></p>
         {% endfor %}
     </div>
 {% endblock %}

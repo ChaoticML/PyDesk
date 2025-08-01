@@ -1,16 +1,33 @@
 {% extends 'layout.html' %}
 {% block title %}Inloggen{% endblock %}
+
 {% block content %}
-    <div class="welcome-container">
+    <div class="login-container">
+        
+        <!-- Flash Berichten Sectie -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flash-messages-login">
+            {% for category, message in messages %}
+              <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
         <h1>Welkom bij HESK Lite</h1>
-        <p>Voer uw naam en het hoofdwachtwoord in om de applicatie te ontgrendelen.</p>
-        <form action="{{ url_for('main.index') }}" method="post" class="ticket-form">
+        <p>Voer uw gebruikersnaam en wachtwoord in om de applicatie te ontgrendelen.</p>
+
+        <!-- Aangepast Formulier -->
+        <form action="{{ url_for('auth.login') }}" method="post" class="login-form">
             <div class="form-group">
-                <label for="user">Uw Naam:</label>
-                <input type="text" id="user" name="user" required>
+                <label for="username">Gebruikersnaam:</label>
+                <!-- Naam is nu 'username' -->
+                <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
-                <label for="password">Hoofdwachtwoord:</label>
+                <label for="password">Wachtwoord:</label>
+                <!-- Naam blijft 'password' -->
                 <input type="password" id="password" name="password" required>
             </div>
             <button type="submit" class="submit-button">Ontgrendelen</button>
