@@ -6,8 +6,21 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from io import BytesIO
+from datetime import datetime
 
 SALT = b'q\x8c\xbf\xe3\x9c\x01\xfd`\xe9\x1f\xd1\xec\x97\xd8\xda\x15'
+
+# ---  DATUMFORMATTERING FUNCTIE ---
+def format_datetime(value, format='%d-%m-%Y %H:%M'):
+    """Converteert een ISO-datumstring naar een leesbaar formaat."""
+    if value is None:
+        return ""
+    # Probeer te parsen met en zonder microseconden voor flexibiliteit
+    try:
+        dt_object = datetime.fromisoformat(value)
+    except ValueError:
+        return value # Geef de originele waarde terug als het parsen mislukt
+    return dt_object.strftime(format)
 
 def generate_key_from_password(password):
     kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=SALT, iterations=480000)

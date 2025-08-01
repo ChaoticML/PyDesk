@@ -29,17 +29,46 @@ def index():
     user = request.form.get('user') or request.args.get('user')
     password = request.form.get('password') or request.args.get('password')
     if not user or not password: return redirect(url_for('main.welcome'))
-    tickets = get_db().execute("SELECT * FROM tickets WHERE status NOT IN ('Resolved', 'Closed') ORDER BY created_at DESC").fetchall()
-    return render_template('index.html', tickets=tickets, user=user, password=password)
+    
+    # --- ZOEKFUNCTIONALITEIT LOGICA ---
+    search_query = request.args.get('search', '')
+    db = get_db()
+    
+    base_query = "SELECT * FROM tickets WHERE status NOT IN ('Resolved', 'Closed')"
+    params = []
+    
+    if search_query:
+        base_query += " AND (title LIKE ? OR description LIKE ?)"
+        params.extend([f'%{search_query}%', f'%{search_query}%'])
+        
+    base_query += " ORDER BY created_at DESC"
+    tickets = db.execute(base_query, params).fetchall()
+
+    return render_template('index.html', tickets=tickets, user=user, password=password, search_query=search_query)
 
 @bp.route('/archive')
 def archive():
     user = request.args.get('user')
     password = request.args.get('password')
     if not user or not password: return redirect(url_for('main.welcome'))
-    archived_tickets = get_db().execute("SELECT * FROM tickets WHERE status IN ('Resolved', 'Closed') ORDER BY created_at DESC").fetchall()
-    return render_template('archive.html', tickets=archived_tickets, user=user, password=password)
+    
+    # --- ZOEKFUNCTIONALITEIT LOGICA ---
+    search_query = request.args.get('search', '')
+    db = get_db()
+    
+    base_query = "SELECT * FROM tickets WHERE status IN ('Resolved', 'Closed')"
+    params = []
+    
+    if search_query:
+        base_query += " AND (title LIKE ? OR description LIKE ?)"
+        params.extend([f'%{search_query}%', f'%{search_query}%'])
+        
+    base_query += " ORDER BY created_at DESC"
+    archived_tickets = db.execute(base_query, params).fetchall()
 
+    return render_template('archive.html', tickets=archived_tickets, user=user, password=password, search_query=search_query)
+
+# ... (create, view_ticket, assign, update functies blijven hetzelfde) ...
 @bp.route('/create', methods=['GET', 'POST'])
 def create():
     user = request.args.get('user')
