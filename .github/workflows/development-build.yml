@@ -1,0 +1,44 @@
+# Naam van de workflow die wordt getoond in het "Actions"-tabblad
+name: Development Build
+
+# Deze workflow start automatisch bij elke push naar de 'main' branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    # Ik gebruik de laatste versie van Windows om de .exe te bouwen
+    runs-on: windows-latest
+
+    steps:
+      # Stap 1: Haal de code uit uw repository op
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Stap 2: Installeer Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Stap 3: Installeer de Python-afhankelijkheden
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install Flask PyInstaller matplotlib cryptography
+
+      # Stap 4: Bouw de .exe met PyInstaller
+      - name: Build the executable
+        run: pyinstaller --onefile --windowed --add-data "app/templates;app/templates" --add-data "app/static;app/static" run.py
+
+      # Stap 5: Upload de gebouwde .exe als een artefact
+      # Dit bestand zal beschikbaar zijn om te downloaden op de pagina van de workflow run.
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # De naam van het artefact zoals het getoond wordt op GitHub
+          name: HESK-Lite-Windows-dev
+          # Het pad naar het bestand dat geüpload moet worden
+          path: dist/run.exe
