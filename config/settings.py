@@ -1,3 +1,3 @@
 USERS = {
-    "admin": "scrypt:32768:8:1$uei4xBji4Z6afAQw$2ef112b5e13e5aad4576149f9533adaa0bcf0aef211ffe99830834915d9c050834664b607ae332108ab3857a4618cdb1ad607f75ed2bf3b20e4e56296b6840f3"
+    "admin": "pbkdf2:sha256:600000$PASTE_YOUR_GENERATED_HASH_HERE$xxxxxxxxxxxxxxxxxxxxxxxx"
 }
