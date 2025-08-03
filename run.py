@@ -14,7 +14,7 @@ def open_browser():
 
 def run_app():
     """Start de applicatie met een productie-grade server en opent de browser."""
-    print(f"HESK Lite wordt gestart op http://{HOST}:{PORT}")
+    print(f"PyDesk wordt gestart op http://{HOST}:{PORT}")
     
     # Start de browser in een aparte thread om de server niet te blokkeren.
     open_browser()
