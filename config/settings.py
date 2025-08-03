@@ -2,8 +2,8 @@ import os
 import sys
 
 # ==============================================================================
-# HESK LITE CONFIGURATIE
-# Dit bestand bevat alle instellingen voor de HESK Lite applicatie.
+# PyDesk CONFIGURATIE
+# Dit bestand bevat alle instellingen voor de PyDesk applicatie.
 # ==============================================================================
 
 # --- Server Instellingen ---
