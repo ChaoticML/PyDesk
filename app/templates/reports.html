@@ -1,25 +1,36 @@
 {% extends 'layout.html' %}
 {% block title %}Rapporten{% endblock %}
+
 {% block content %}
-    <h1>Rapporten</h1>
-    <p>Deze pagina toont een samenvatting van alle gegevens in het systeem.</p>
+    <div class="page-header">
+        <h1>Rapporten</h1>
+    </div>
+    <p class="page-subtitle">Deze pagina toont een visuele samenvatting van de gegevens in het systeem.</p>
     
     <div class="report-grid">
-        <div class="chart-container">
-            <!-- Link naar status_chart aangepast -->
-            <img src="{{ url_for('reports.status_chart') }}" alt="Tickets per Status">
+        <div class="chart-card">
+            <h2 class="chart-title">Tickets per Status</h2>
+            <div class="chart-container">
+                <img src="{{ url_for('reports.status_chart') }}" alt="Cirkeldiagram van tickets per status" loading="lazy">
+            </div>
         </div>
-        <div class="chart-container">
-            <!-- Link naar priority_chart aangepast -->
-            <img src="{{ url_for('reports.priority_chart') }}" alt="Tickets per Prioriteit">
+        <div class="chart-card">
+            <h2 class="chart-title">Tickets per Prioriteit</h2>
+            <div class="chart-container">
+                <img src="{{ url_for('reports.priority_chart') }}" alt="Cirkeldiagram van tickets per prioriteit" loading="lazy">
+            </div>
         </div>
-        <div class="chart-container">
-            <!-- Link naar assignment_chart aangepast -->
-            <img src="{{ url_for('reports.assignment_chart') }}" alt="Toegewezen vs. Niet-toegewezen Tickets">
+        <div class="chart-card">
+            <h2 class="chart-title">Ticket Toewijzingen</h2>
+            <div class="chart-container">
+                <img src="{{ url_for('reports.assignment_chart') }}" alt="Cirkeldiagram van toegewezen vs. niet-toegewezen tickets" loading="lazy">
+            </div>
         </div>
-        <div class="chart-container full-width">
-            <!-- Link naar kb_chart aangepast -->
-            <img src="{{ url_for('reports.kb_chart') }}" alt="Kennisbank Artikelen per Categorie">
+        <div class="chart-card full-width">
+            <h2 class="chart-title">Kennisbank Artikelen per Categorie</h2>
+            <div class="chart-container">
+                <img src="{{ url_for('reports.kb_chart') }}" alt="Staafdiagram van kennisbank artikelen per categorie" loading="lazy">
+            </div>
         </div>
     </div>
 {% endblock %}

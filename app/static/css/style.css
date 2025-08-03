@@ -1,478 +1,757 @@
-/* Algemene Stijlen */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: #f4f7f6;
-    color: #333;
-    margin: 0;
-}
-main.content {
-    max-width: 1000px;
-    margin: 2em auto;
-    padding: 2em;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-}
-h1 {
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 0.5em;
-    margin-bottom: 1em;
+/* ==========================================================================
+   HESK Lite - Stijlblad
+   ========================================================================== */
+
+/* --- Globale Variabelen & Reset --- */
+:root {
+    --primary-color: #2b6cb0;
+    --primary-dark: #2c5282;
+    --secondary-color: #4a5568;
+    --secondary-dark: #2d3748;
+    --danger-color: #c53030;
+    --danger-dark: #9b2c2c;
+    --success-color: #38a169;
+    --warning-color: #dd6b20;
+    --info-color: #2c7a7b;
+    --light-gray: #f7fafc;
+    --border-color: #e2e8f0;
+    --text-color: #2d3748;
+    --text-light: #718096;
+    --background-color: #f4f7f6;
+    --white: #ffffff;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Navigatiebalk */
-nav {
-    background-color: #ffffff;
-    border-bottom: 1px solid #ddd;
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* --- Paginastructuur --- */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+main.content {
+    flex-grow: 1;
+    max-width: 1100px;
+    width: 95%;
+    margin: 2em auto;
+}
+
+h1, h2, h3 {
+    color: var(--text-color);
+}
+
+h1 {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5em;
+    margin-top: 0;
+    margin-bottom: 1em;
+    font-size: 2em;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+    gap: 1em;
+}
+
+.page-header h1 {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.page-subtitle {
+    margin-top: -1em;
+    margin-bottom: 2em;
+    color: var(--text-light);
+}
+
+/* --- Header & Navigatie --- */
+.main-header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-color);
     padding: 0 2em;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
+
 .nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
+    height: 64px;
 }
+
 .nav-brand {
     font-size: 1.5em;
     font-weight: bold;
-    color: #2d3748;
+    color: var(--text-color);
     text-decoration: none;
 }
-nav a {
-    color: #4a5568;
-    text-decoration: none;
-    padding: 1.5em 1em;
-    display: inline-block;
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
-nav a:hover {
-    background-color: #f4f7f6;
+
+.nav-links li {
+    height: 100%;
 }
-.nav-user {
-    color: #4a5568;
-    font-weight: bold;
+
+.nav-links a {
     display: flex;
     align-items: center;
-}
-
-/* Login Pagina */
-.login-container {
-    text-align: center;
-    padding: 4em 2em;
-}
-
-/* Ticket Lijst */
-.ticket-summary {
-    border: 1px solid #e2e8f0;
-    border-left: 5px solid #a0aec0;
-    padding: 1em 1.5em;
-    margin-bottom: 1em;
-    border-radius: 5px;
-    transition: box-shadow 0.2s;
-}
-.ticket-summary:hover {
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-.ticket-summary h3 a {
-    color: #2b6cb0;
+    padding: 0 1em;
+    height: 100%;
+    color: var(--secondary-color);
     text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
 }
 
-/* Algemene Formulieren */
-.ticket-form .form-group {
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+.nav-links li.active a {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    font-weight: 600;
+}
+
+.nav-button-create {
+    background-color: var(--primary-color);
+    color: var(--white) !important;
+    border-radius: 5px;
+    padding: 0.5em 1em !important;
+    margin-left: 1em;
+    height: auto !important;
+    align-self: center;
+    border-bottom: none !important;
+}
+
+.nav-button-create:hover {
+    background-color: var(--primary-dark);
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+}
+
+.user-greeting {
+    color: var(--text-light);
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+}
+
+/* --- Footer --- */
+.main-footer {
+    text-align: center;
+    padding: 1.5em;
+    color: var(--text-light);
+    font-size: 0.9em;
+    background-color: var(--white);
+    border-top: 1px solid var(--border-color);
+}
+
+/* --- Login Pagina --- */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 2.5em;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.login-brand {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 0.5em;
+    border-bottom: none;
+}
+
+.login-form {
+    text-align: left;
+}
+
+.password-group {
+    position: relative;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    top: 70%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+    opacity: 0.6;
+}
+
+.password-toggle-icon:hover {
+    opacity: 1;
+}
+
+.flash-messages-login {
+    width: 100%;
+    max-width: 400px;
     margin-bottom: 1.5em;
 }
-.ticket-form label {
+
+/* --- Algemene Formulieren --- */
+.form-container {
+    background-color: var(--white);
+    padding: 2em;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.form-group {
+    margin-bottom: 1.5em;
+}
+
+label {
     display: block;
     margin-bottom: 0.5em;
-    font-weight: bold;
+    font-weight: 600;
 }
-.ticket-form input[type="text"],
-.ticket-form input[type="email"],
-.ticket-form input[type="password"],
-.ticket-form textarea,
-.ticket-form select {
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+textarea,
+select {
     width: 100%;
     padding: 0.8em;
     border: 1px solid #cbd5e0;
     border-radius: 4px;
-    box-sizing: border-box;
+    font-size: 1em;
+    font-family: var(--font-family);
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
-.ticket-form .submit-button {
-    background-color: #2b6cb0;
-    color: white;
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.2);
+}
+
+fieldset {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5em;
+    margin-bottom: 2em;
+}
+
+legend {
+    padding: 0 0.5em;
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5em;
+}
+
+.form-actions {
+    padding-top: 1em;
+    border-top: 1px solid var(--border-color);
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
+}
+
+/* --- Knoppen --- */
+.submit-button, .filter-button, .assign-button, .delete-button, .shutdown-button, .logout-button, .edit-button, .button-secondary {
     padding: 0.8em 1.5em;
     border: none;
     border-radius: 4px;
     font-size: 1em;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
-}
-.ticket-form .submit-button:hover {
-    background-color: #2c5282;
+    transition: background-color 0.2s, opacity 0.2s;
+    color: var(--white);
+    text-decoration: none;
+    display: inline-block;
 }
 
-/* Ticket Detailpagina */
+.submit-button { background-color: var(--primary-color); }
+.submit-button:hover { background-color: var(--primary-dark); }
+.submit-button:disabled { background-color: #a0aec0; cursor: not-allowed; }
+
+.filter-button { background-color: var(--secondary-color); }
+.filter-button:hover { background-color: var(--secondary-dark); }
+
+.assign-button { background-color: var(--info-color); padding: 0.4em 0.8em; font-size: 0.9em; }
+.assign-button:hover { background-color: #285e61; }
+
+.delete-button { background-color: var(--danger-color); }
+.delete-button:hover { background-color: var(--danger-dark); }
+
+.shutdown-button { background-color: var(--danger-color); padding: 0.5em 1em; font-size: 0.9em; }
+.shutdown-button:hover { background-color: var(--danger-dark); }
+
+.logout-button { background-color: var(--secondary-color); padding: 0.5em 1em; font-size: 0.9em; }
+.logout-button:hover { background-color: var(--secondary-dark); }
+
+.edit-button { background-color: var(--secondary-color); padding: 0.5em 1em; font-size: 0.9em; }
+.edit-button:hover { background-color: var(--secondary-dark); }
+
+.button-secondary {
+    background-color: var(--white);
+    color: var(--secondary-dark);
+    border: 1px solid var(--border-color);
+}
+.button-secondary:hover {
+    background-color: var(--light-gray);
+}
+
+/* --- Ticket Lijst --- */
+.ticket-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.ticket-summary {
+    border: 1px solid var(--border-color);
+    border-left: 5px solid #a0aec0;
+    border-radius: 5px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    background-color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em 1.5em;
+}
+.ticket-summary:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.ticket-main-info h3 {
+    margin: 0 0 0.5em 0;
+}
+.ticket-main-info h3 a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1.2em;
+}
+.ticket-main-info .ticket-id {
+    color: var(--text-light);
+}
+.ticket-meta {
+    font-size: 0.9em;
+    color: var(--text-light);
+    display: flex;
+    gap: 1em;
+}
+
+.ticket-status-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5em;
+    font-size: 0.9em;
+}
+
+.ticket-tag {
+    background-color: var(--light-gray);
+    border: 1px solid var(--border-color);
+    padding: 0.3em 0.8em;
+    border-radius: 15px;
+    font-size: 0.85em;
+}
+
+.ticket-summary.priority-hoog { border-left-color: var(--danger-color); }
+.ticket-summary.priority-gemiddeld { border-left-color: var(--warning-color); }
+.ticket-summary.priority-laag { border-left-color: var(--success-color); }
+
+.ticket-summary.status-resolved,
+.ticket-summary.status-closed {
+    opacity: 0.7;
+    background-color: var(--light-gray);
+}
+.ticket-summary.status-resolved h3 a,
+.ticket-summary.status-closed h3 a {
+    text-decoration: line-through;
+    color: var(--text-light);
+}
+
+/* --- Ticket Detailpagina --- */
 .ticket-view-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 2em;
 }
-.ticket-details .detail-section {
-    border-bottom: 1px solid #e2e8f0;
-    padding: 1em 0;
+.ticket-id-header {
+    color: var(--text-light);
 }
-.ticket-details .detail-section:last-child {
-    border-bottom: none;
-}
-.ticket-details p {
-    margin: 0.5em 0;
-}
-.ticket-details .description p {
-    line-height: 1.6;
-    white-space: pre-wrap;
-}
-.ticket-summary.status-opgelost,
-.ticket-summary.status-gesloten {
-    opacity: 0.7;
-    background-color: #f7fafc;
-}
-
-.ticket-summary.status-opgelost h3 a,
-.ticket-summary.status-gesloten h3 a {
-    text-decoration: line-through;
-    color: #718096;
-}
-.sensitive-notes-group .warning-text {
-    font-size: 0.9em;
-    color: #c53030; 
-    margin-bottom: 0.5em;
-}
-.sensitive-notes-view h3 {
-    color: #c53030;
-}
-.sensitive-notes-view .warning-box {
-    background-color: #fff5f5;
-    border: 1px solid #f56565;
-    border-left: 5px solid #c53030;
-    padding: 1em;
-    border-radius: 4px;
-    white-space: pre-wrap; 
-    word-wrap: break-word; 
-}
-.management-panel, .comments-history {
-    background-color: #f7fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 1.5em;
-    margin-bottom: 2em;
-}
-.comments-history .comment-item {
-    border-bottom: 1px solid #e2e8f0;
-    padding: 1em 0;
-}
-.comments-history .comment-item:last-child {
-    border-bottom: none;
-}
-.comment-body {
-    margin: 0 0 0.5em 0;
-}
-.comment-meta {
-    font-size: 0.8em;
-    color: #718096;
-    margin: 0;
-}
-
-/* Kennisbank */
-.kb-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1em;
-}
-.kb-category-box {
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
+.ticket-details-card, .ticket-description-card {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 1.5em;
     margin-bottom: 1.5em;
 }
-.kb-category-box h2 {
-    margin-top: 0;
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 0.5em;
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5em;
 }
+.detail-item .detail-label {
+    display: block;
+    font-size: 0.9em;
+    color: var(--text-light);
+    margin-bottom: 0.2em;
+}
+.detail-item .detail-value {
+    font-weight: 600;
+}
+.ticket-description-card h2 {
+    margin-top: 0;
+}
+.ticket-description-card p {
+    line-height: 1.6;
+    white-space: pre-wrap;
+    margin: 0;
+}
+
+.sensitive-notes-group .warning-text { font-size: 0.9em; color: var(--danger-color); margin-bottom: 0.5em; }
+.sensitive-notes-view h3 { color: var(--danger-color); }
+.sensitive-notes-view .warning-box {
+    background-color: #fff5f5;
+    border: 1px solid #f56565;
+    border-left: 5px solid var(--danger-color);
+    padding: 1em;
+    border-radius: 4px;
+}
+.sensitive-notes-view pre {
+    margin: 0;
+    white-space: pre-wrap; 
+    word-wrap: break-word; 
+}
+
+.management-panel {
+    background-color: var(--light-gray);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5em;
+    margin-bottom: 1.5em;
+}
+.management-panel h2 {
+    margin-top: 0;
+    font-size: 1.2em;
+}
+.assignment-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.assigned-user {
+    font-weight: bold;
+}
+.unassigned {
+    font-style: italic;
+    color: var(--text-light);
+}
+
+.comments-history {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5em;
+}
+.comments-history h2 {
+    margin-top: 0;
+}
+.comment-item {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 1em;
+}
+.comment-item:last-child {
+    margin-bottom: 0;
+}
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--light-gray);
+    padding: 0.5em 1em;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9em;
+}
+.comment-author {
+    font-weight: bold;
+}
+.comment-meta {
+    color: var(--text-light);
+}
+.comment-body {
+    padding: 1em;
+    margin: 0;
+    white-space: pre-wrap;
+}
+.comment-item.event-event {
+    background-color: var(--light-gray);
+    border-style: dashed;
+}
+.comment-item.event-event .comment-header {
+    display: none;
+}
+.comment-item.event-event .comment-body {
+    font-style: italic;
+    color: var(--text-light);
+    text-align: center;
+}
+
+/* --- Kennisbank & Sjablonen --- */
+.kb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5em;
+}
+
+.kb-category-card {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.kb-category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.kb-card-header {
+    padding: 1em 1.5em;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+}
+.kb-card-header h2 {
+    margin: 0;
+    font-size: 1.2em;
+    flex-grow: 1;
+}
+.kb-article-count {
+    font-size: 0.9em;
+    color: var(--text-light);
+    background-color: var(--light-gray);
+    padding: 0.2em 0.6em;
+    border-radius: 10px;
+}
+
 .kb-article-list {
     list-style-type: none;
-    padding-left: 0;
+    padding: 1.5em;
+    margin: 0;
 }
 .kb-article-list li {
-    margin-bottom: 0.5em;
+    margin-bottom: 0.8em;
+}
+.kb-article-list li:last-child {
+    margin-bottom: 0;
 }
 .kb-article-list a {
     text-decoration: none;
-    color: #2b6cb0;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
 }
 .kb-article-list a:hover {
     text-decoration: underline;
 }
-.kb-article-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 1em;
-    margin-bottom: 1em;
-}
-.kb-article-category {
-    font-size: 0.9em;
-    font-weight: bold;
-    color: #718096;
-    text-transform: uppercase;
-}
-.kb-article-header h1 {
-    margin: 0.2em 0;
-    border-bottom: none;
-}
-.kb-article-meta {
-    font-size: 0.8em;
-    color: #a0aec0;
+
+.kb-article-header-info {
+    flex-grow: 1;
 }
 .kb-article-actions {
     display: flex;
     gap: 1em;
+    align-items: center;
 }
-.kb-article-content {
+.kb-article-meta {
+    margin-top: -1em;
+    margin-bottom: 1.5em;
+    font-size: 0.9em;
+    color: var(--text-light);
+    display: flex;
+    gap: 1.5em;
+}
+.article-content-container {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2em;
     line-height: 1.7;
-    white-space: pre-wrap;
+}
+.article-content-container h1, .article-content-container h2, .article-content-container h3 {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3em;
+    margin-top: 1.5em;
+}
+.article-content-container p {
+    margin-bottom: 1em;
+}
+.article-content-container pre {
+    background-color: var(--light-gray);
+    padding: 1em;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+.article-content-container code {
+    font-family: "Courier New", Courier, monospace;
 }
 
-/* Rapporten Pagina */
+.template-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+.template-card {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--white);
+}
+.template-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--light-gray);
+    padding: 0.8em 1.5em;
+    border-bottom: 1px solid var(--border-color);
+}
+.template-card-header h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+.template-card-actions {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+.template-card-content {
+    padding: 1.5em;
+}
+.template-card-content pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background-color: #fdfdfd;
+    padding: 1em;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+}
+
+/* --- Rapporten Pagina --- */
 .report-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 2em;
 }
-.chart-container {
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
+.chart-card {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 1.5em;
-    text-align: center;
 }
-.chart-container.full-width {
-    grid-column: 1 / -1;
+.chart-title {
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.2em;
+}
+.chart-container {
+    min-height: 250px; /* Zorgt voor een consistente hoogte terwijl de afbeelding laadt */
 }
 .chart-container img {
     max-width: 100%;
     height: auto;
 }
-
-/* Diverse Componenten */
-.flash-messages {
-    padding: 0;
-    margin: 0;
-    list-style: none;
+.chart-card.full-width {
+    grid-column: 1 / -1;
 }
 
-/* Filter & Sorteer Paneel */
-.filter-container {
-    background-color: #f7fafc;
-    border: 1px solid #e2e8f0;
+/* --- Filter Paneel --- */
+.filter-container { background-color: var(--light-gray); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5em; margin-bottom: 2em; }
+.filter-container form { display: flex; flex-wrap: wrap; gap: 1.5em; align-items: flex-end; }
+.filter-container .form-group { margin-bottom: 0; flex-grow: 1; }
+.filter-container label { font-size: 0.9em; margin-bottom: 0.3em; }
+
+/* --- Flash Berichten --- */
+.flash-messages { list-style: none; padding: 0; margin: 0 0 1.5em 0; }
+.flash { display: flex; justify-content: space-between; align-items: center; padding: 1em; margin-bottom: 1em; border-radius: 4px; color: var(--white); }
+.flash.success { background-color: var(--success-color); }
+.flash.error { background-color: var(--danger-color); }
+.flash.warning { background-color: var(--warning-color); }
+.flash.info { background-color: var(--info-color); }
+.flash-close { background: none; border: none; color: white; font-size: 1.5em; line-height: 1; cursor: pointer; margin-left: 1em; opacity: 0.7; }
+.flash-close:hover { opacity: 1; }
+
+/* --- Gekoppeld KB Artikel --- */
+.linked-kb-article { background-color: #ebf8ff; border: 1px solid #90cdf4; border-left: 5px solid var(--primary-color); padding: 1em; margin-bottom: 2em; border-radius: 4px; }
+.linked-kb-article a { color: var(--primary-color); font-weight: bold; text-decoration: none; }
+.linked-kb-article a:hover { text-decoration: underline; }
+
+/* --- Empty State --- */
+.empty-state {
+    text-align: center;
+    padding: 4em 2em;
+    background-color: var(--white);
+    border: 2px dashed var(--border-color);
     border-radius: 8px;
-    padding: 1.5em;
-    margin-bottom: 2em;
 }
-.filter-container form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5em;
-    align-items: flex-end;
+.empty-state h2 {
+    margin-top: 0;
 }
-.filter-container .form-group {
-    margin-bottom: 0;
-    flex-grow: 1;
-}
-.filter-container label {
-    font-size: 0.9em;
-    margin-bottom: 0.3em;
-}
-.filter-container input,
-.filter-container select {
-    width: 100%;
-    padding: 0.8em;
-    border: 1px solid #cbd5e0;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-.filter-button {
-    background-color: #4a5568;
-    color: white;
-    padding: 0.8em 1.5em;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    height: fit-content;
-}
-.filter-button:hover {
-    background-color: #2d3748;
-}
-.assign-button {
-    background-color: #2c7a7b;
-    color: white;
-    padding: 0.4em 0.8em;
-    border: none;
-    border-radius: 4px;
-    font-size: 0.9em;
-    cursor: pointer;
-}
-.assign-button:hover {
-    background-color: #285e61;
-}
-.delete-button {
-    background-color: #c53030;
-    color: white;
-    padding: 0.8em 1.5em;
-    border: none;
-    border-radius: 4px;
-    font-size: 1em;
-    cursor: pointer;
-}
-.delete-button:hover {
-    background-color: #9b2c2c;
-}
-.shutdown-button {
-    background-color: #c53030;
-    color: white;
-    padding: 0.5em 1em;
-    border: none;
-    border-radius: 4px;
-    font-size: 0.9em;
-    cursor: pointer;
-    font-weight: bold;
-}
-.shutdown-button:hover {
-    background-color: #9b2c2c;
-}
-
-
-/* Visuele Indicatoren voor Ticket Prioriteit */
-.ticket-summary.priority-hoog {
-    border-left-color: #c53030; /* Rood */
-}
-.ticket-summary.priority-gemiddeld {
-    border-left-color: #dd6b20; /* Oranje */
-}
-.ticket-summary.priority-laag {
-    border-left-color: #38a169; /* Groen */
-}
-
-/* Flash Messages */
-.flash {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1em;
-    margin-bottom: 1em;
-    border-radius: 4px;
-    color: #fff;
-}
-.flash.success {
-    background-color: #38a169;
-}
-.flash.error {
-    background-color: #c53030;
-}
-.flash-close {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5em;
-    line-height: 1;
-    cursor: pointer;
-    margin-left: 1em;
-    opacity: 0.7;
-}
-.flash-close:hover {
-    opacity: 1;
-}
-
-/* Geschiedenis / Audit Trail */
-.comment-item.event-event .comment-body {
-    font-style: italic;
-    color: #718096;
-}
-
-/* Gekoppeld KB Artikel */
-.linked-kb-article {
-    background-color: #ebf8ff;
-    border: 1px solid #90cdf4;
-    border-left: 5px solid #4299e1;
-    padding: 1em;
-    margin-bottom: 2em;
-    border-radius: 4px;
-}
-.linked-kb-article a {
-    color: #2b6cb0;
-    font-weight: bold;
-    text-decoration: none;
-}
-.linked-kb-article a:hover {
-    text-decoration: underline;
-}
-
-/* Sjablonen Pagina */
-.template-list .template-item {
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    margin-bottom: 1.5em;
-}
-.template-item-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f7fafc;
-    padding: 0.8em 1.5em;
-    border-bottom: 1px solid #e2e8f0;
-}
-.template-item-header h3 {
-    margin: 0;
-}
-.template-item-actions {
-    display: flex;
-    gap: 1em;
-}
-.template-content {
-    padding: 1.5em;
-    white-space: pre-wrap;
-    background-color: #ffffff;
-}
-.edit-button {
-    background-color: #4a5568;
-    color: white;
-    padding: 0.5em 1em;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.9em;
-}
-.edit-button:hover {
-    background-color: #2d3748;
-}
-
-/* Uitloggen knop */
-.logout-button {
-    background-color: #718096; /* Een andere kleur dan de shutdown knop */
-    color: white;
-    padding: 0.5em 1em;
-    border: none;
-    border-radius: 4px;
-    font-size: 0.9em;
-    cursor: pointer;
-    font-weight: bold;
-    text-decoration: none; /* Belangrijk voor <a> tags */
-    display: inline-block; /* Zorgt voor correcte weergave */
-    margin-left: 1em;
-}
-.logout-button:hover {
-    background-color: #4a5568;
+.empty-state p {
+    color: var(--text-light);
+    max-width: 500px;
+    margin: 0 auto 1.5em auto;
 }

@@ -1,18 +1,40 @@
 {% extends 'layout.html' %}
 {% block title %}{{ title }}{% endblock %}
+
 {% block content %}
-    <h1>{{ title }}</h1>
+    <div class="page-header">
+        <h1>{{ title }}</h1>
+    </div>
     
-    <!-- Dynamische action URL voor aanmaken of bewerken van sjablonen -->
-    <form method="post" class="ticket-form" action="{{ url_for('templates.templates_create') if not template else url_for('templates.templates_edit', template_id=template.id) }}">
-        <div class="form-group">
-            <label for="title">Titel van Sjabloon:</label>
-            <input type="text" id="title" name="title" value="{{ template.title if template else '' }}" required>
-        </div>
-        <div class="form-group">
-            <label for="content">Inhoud van Sjabloon:</label>
-            <textarea id="content" name="content" rows="10" required>{{ template.content if template else '' }}</textarea>
-        </div>
-        <button type="submit" class="submit-button">Sjabloon Opslaan</button>
-    </form>
+    <div class="form-container">
+        <form method="post" class="ticket-form" id="template-form" action="{{ url_for('templates.templates_create') if not template else url_for('templates.templates_edit', template_id=template.id) }}">
+            <fieldset>
+                <legend>Sjabloon Details</legend>
+                <div class="form-group">
+                    <label for="title">Titel:</label>
+                    <input type="text" id="title" name="title" value="{{ template.title if template else '' }}" required autofocus placeholder="Geef het sjabloon een herkenbare titel">
+                </div>
+                <div class="form-group">
+                    <label for="content">Inhoud:</label>
+                    <textarea id="content" name="content" rows="10" required placeholder="Schrijf hier de inhoud van het sjabloon. Dit kan direct in een ticketreactie worden ingevoegd.">{{ template.content if template else '' }}</textarea>
+                </div>
+            </fieldset>
+
+            <div class="form-actions">
+                <a href="{{ url_for('templates.templates_index') }}" class="button-secondary">Annuleren</a>
+                <button type="submit" class="submit-button" id="submit-button">Sjabloon Opslaan</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Feedback op de submit-knop
+        const templateForm = document.getElementById('template-form');
+        const submitButton = document.getElementById('submit-button');
+
+        templateForm.addEventListener('submit', function() {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Bezig...';
+        });
+    </script>
 {% endblock %}

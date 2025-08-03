@@ -2,36 +2,32 @@
 {% block title %}Archief{% endblock %}
 
 {% block content %}
-    <h1>Archief</h1>
+    <div class="page-header">
+        <h1>Archief</h1>
+    </div>
     
     <div class="filter-container">
-        <!-- Het formulier verstuurt nu geen verborgen user/password velden meer -->
         <form method="get" action="{{ url_for('main.archive') }}">
-            <!-- VERWIJDERD: De hidden inputs voor user en password zijn niet meer nodig. -->
-            
             <div class="form-group">
                 <label for="search">Zoek:</label>
-                <!-- De waarde voor search blijft behouden -->
                 <input type="search" id="search" name="search" placeholder="Zoek in archief..." value="{{ search_query or '' }}">
             </div>
 
             <div class="form-group">
-                <label for="sort">Sorteer op:</label>
-                <!-- De sorteeropties blijven behouden -->
-                <select id="sort" name="sort">
-                    <option value="created_at_desc" {% if sort_by == 'created_at_desc' %}selected{% endif %}>Datum (Nieuwste eerst)</option>
-                    <option value="created_at_asc" {% if sort_by == 'created_at_asc' %}selected{% endif %}>Datum (Oudste eerst)</option>
-                    <option value="priority" {% if sort_by == 'priority' %}selected{% endif %}>Prioriteit (Hoog > Laag)</option>
-                    <option value="status" {% if sort_by == 'status' %}selected{% endif %}>Status</option>
+                <label for="filter">Filter op:</label>
+                <select id="filter" name="filter">
+                    <option value="all" {% if filter_by == 'all' %}selected{% endif %}>Alle Gearchiveerde Tickets</option>
+                    <option value="mine" {% if filter_by == 'mine' %}selected{% endif %}>Mijn Tickets</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="filter">Filter op:</label>
-                <!-- Filteropties blijven behouden -->
-                <select id="filter" name="filter">
-                    <option value="all" {% if filter_by == 'all' %}selected{% endif %}>Alle tickets</option>
-                    <option value="mine" {% if filter_by == 'mine' %}selected{% endif %}>Mijn toegewezen tickets</option>
+                <label for="sort">Sorteer op:</label>
+                <select id="sort" name="sort">
+                    <option value="created_at_desc" {% if sort_by == 'created_at_desc' %}selected{% endif %}>Datum (Nieuwste eerst)</option>
+                    <option value="created_at_asc" {% if sort_by == 'created_at_asc' %}selected{% endif %}>Datum (Oudste eerst)</option>
+                    <option value="priority" {% if sort_by == 'priority' %}selected{% endif %}>Prioriteit</option>
+                    <option value="status" {% if sort_by == 'status' %}selected{% endif %}>Status</option>
                 </select>
             </div>
             
@@ -39,22 +35,31 @@
         </form>
     </div>
 
-    {% for ticket in tickets %}
-        <!-- De class voor prioriteit blijft hetzelfde -->
-        <div class="ticket-summary priority-{{ ticket.priority.lower() }} status-{{ ticket.status | lower | replace(' ', '-') }}">
-            <!-- De link naar view_ticket bevat geen user/password parameters meer -->
-            <h3><a href="{{ url_for('main.view_ticket', ticket_id=ticket.id) }}">{{ ticket.title }}</a></h3>
-            <p>
-                <strong>Ticket ID:</strong> #{{ ticket.id }} |
-                <strong>Status:</strong> {{ ticket.status }} |
-                <strong>Prioriteit:</strong> {{ ticket.priority }}
-            </p>
-            <p>
-                <strong>Aangemaakt:</strong> {{ ticket.created_at | datetimeformat }} |
-                <strong>Toegewezen aan:</strong> {% if ticket.assigned_to %}{{ ticket.assigned_to }}{% else %}Niemand{% endif %}
-            </p>
-        </div>
-    {% else %}
-        <p>Geen gearchiveerde tickets gevonden die aan de criteria voldoen.</p>
-    {% endfor %}
+    <div class="ticket-list">
+        {% for ticket in tickets %}
+            <div class="ticket-summary priority-{{ ticket.priority.lower() }} status-{{ ticket.status | lower | replace(' ', '-') | replace('behandeling', 'progress') }}">
+                <div class="ticket-main-info">
+                    <h3>
+                        <a href="{{ url_for('main.view_ticket', ticket_id=ticket.id) }}">
+                            <span class="ticket-id">#{{ ticket.id }}</span> - {{ ticket.title }}
+                        </a>
+                    </h3>
+                    <div class="ticket-meta">
+                        <span><strong>Aanvrager:</strong> {{ ticket.requester_name }}</span>
+                        <span><strong>Aangemaakt:</strong> {{ ticket.created_at | datetimeformat }}</span>
+                    </div>
+                </div>
+                <div class="ticket-status-info">
+                    <span class="ticket-tag status-tag">Status: {{ ticket.status }}</span>
+                    <span class="ticket-tag priority-tag">Prioriteit: {{ ticket.priority }}</span>
+                    <span class="ticket-tag assigned-tag">Toegewezen aan: {% if ticket.assigned_to %}{{ ticket.assigned_to }}{% else %}Niemand{% endif %}</span>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h2>Geen gearchiveerde tickets gevonden</h2>
+                <p>Er zijn geen tickets in het archief die aan uw zoek- en filtercriteria voldoen.</p>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

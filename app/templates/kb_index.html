@@ -1,24 +1,39 @@
 {% extends 'layout.html' %}
 {% block title %}Kennisbank{% endblock %}
+
 {% block content %}
-    <div class="kb-header">
+    <div class="page-header">
         <h1>Kennisbank</h1>
-        <!-- Link naar nieuw artikel aangepast -->
-        <a href="{{ url_for('kb.kb_create') }}" class="submit-button">Nieuw Artikel Aanmaken</a>
+        <a href="{{ url_for('kb.kb_create') }}" class="submit-button">Nieuw Artikel</a>
     </div>
-    
-    {% for category, articles in grouped_articles.items() %}
-        <div class="kb-category-box">
-            <h2>{{ category }}</h2>
-            <ul class="kb-article-list">
-                {% for article in articles %}
-                    <!-- Link naar individueel artikel aangepast -->
-                    <li><a href="{{ url_for('kb.kb_article', article_id=article.id) }}">{{ article.title }}</a></li>
-                {% endfor %}
-            </ul>
+
+    {% if grouped_articles %}
+        <div class="kb-grid">
+            {% for category, articles in grouped_articles.items() %}
+                <div class="kb-category-card">
+                    <div class="kb-card-header">
+                        <span class="kb-card-icon">📁</span>
+                        <h2>{{ category }}</h2>
+                        <span class="kb-article-count">{{ articles|length }} Artikel(en)</span>
+                    </div>
+                    <ul class="kb-article-list">
+                        {% for article in articles %}
+                            <li>
+                                <a href="{{ url_for('kb.kb_article', article_id=article.id) }}">
+                                    <span class="kb-article-icon">📄</span>
+                                    {{ article.title }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
         </div>
     {% else %}
-        <!-- Link in de else-clausule ook aangepast -->
-        <p>Geen kennisbank artikelen gevonden. <a href="{{ url_for('kb.kb_create') }}">Maak de eerste aan!</a></p>
-    {% endfor %}
+        <div class="empty-state">
+            <h2>De Kennisbank is nog leeg</h2>
+            <p>Documenteer oplossingen en procedures om uw team te helpen sneller te werken.</p>
+            <a href="{{ url_for('kb.kb_create') }}" class="submit-button">Maak het eerste artikel aan</a>
+        </div>
+    {% endif %}
 {% endblock %}
