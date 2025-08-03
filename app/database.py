@@ -62,9 +62,10 @@ def init_db(config):
 
 # --- Helper Functie ---
 def get_db():
-    """Retourneert de database connectie uit de globale context 'g'."""
-    if 'db' not in g:
-        raise RuntimeError("Database not initialized for this context. Ensure get_db is called within an app context.")
+    """
+    Retourneert de database connectie uit de globale context 'g'.
+    Deze wordt geopend in de @app.before_request handler in __init__.py.
+    """
     return g.db
 
 # --- Event Logging ---
@@ -170,7 +171,7 @@ def get_assignment_counts():
 def get_kb_category_counts():
     return get_db().execute('SELECT category, COUNT(*) as count FROM kb_articles GROUP BY category').fetchall()
 
-# --- NIEUWE FUNCTIES VOOR ROUTES ---
+# --- Functies voor Routes ---
 
 def get_active_tickets(user, filter_by, search_query, sort_by):
     db = get_db()
