@@ -1,8 +1,8 @@
-# HESK Lite - Standalone Helpdesk Applicatie
+# PyDesk  - Standalone Helpdesk Applicatie
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python)![Flask](https://img.shields.io/badge/Flask-3.1-000000?logo=flask)![License](https://img.shields.io/badge/License-MIT-yellow.svg)![Status](https://img.shields.io/badge/Status-Actieve%20Ontwikkeling-blue)
 
-**HESK Lite** is een op maat gemaakte, volledig op zichzelf staande en veilige helpdesk-applicatie. Dit project is ontworpen als een lichtgewicht, betrouwbaar en foolproof alternatief voor complexere systemen, specifiek gebouwd voor een gestroomlijnde, Nederlandstalige workflow.
+**PyDesk ** is een op maat gemaakte, volledig op zichzelf staande en veilige helpdesk-applicatie. Dit project is ontworpen als een lichtgewicht, betrouwbaar en foolproof alternatief voor complexere systemen, specifiek gebouwd voor een gestroomlijnde, Nederlandstalige workflow.
 
 ---
 
@@ -46,15 +46,15 @@ De applicatie draait als één enkel `.exe`-bestand op Windows, vereist geen ins
 ## Technische Hoogtepunten
 
 *   **Zero-Installatie:** Gebundeld in één enkel `.exe`-bestand met PyInstaller.
-*   **Robuuste Dataopslag:** Maakt gebruik van een lokaal, geïndexeerd SQLite-databasebestand.
+*   **Robuuste Dataopslag:** Maakt gebruik van een lokaal, geïndexeerd SQ-databasebestand.
 *   **Professionele Architectuur:** Opgezet met het "Application Factory" patroon en Blueprints van Flask.
 *   **Geautomatiseerde Builds (CI/CD):** Een CI/CD-pijplijn met GitHub Actions bouwt en publiceert automatisch nieuwe releases.
 
 ## Hoe te Gebruiken
 
-Voor maximale veiligheid wordt HESK Lite momenteel gedistribueerd als broncode. U dient de applicatie zelf te bouwen om uw eigen unieke en veilige hoofdwachtwoord in te stellen.
+Voor maximale veiligheid wordt PyDesk  momenteel gedistribueerd als broncode. U dient de applicatie zelf te bouwen om uw eigen unieke en veilige hoofdwachtwoord in te stellen.
 
-Gedetailleerde, stap-voor-stap instructies vindt u op onze **[Wiki: Zelf Bouwen](https://github.com/ChaoticML/Hesk-Lite/wiki/Zelf-Bouwen)**.
+Gedetailleerde, stap-voor-stap instructies vindt u op onze **[Wiki: Zelf Bouwen](https://github.com/ChaoticML/PyDesk-/wiki/Zelf-Bouwen)**.
 
 Het proces omvat in het kort:
 1.  De repository klonen.
