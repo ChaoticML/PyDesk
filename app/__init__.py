@@ -1,5 +1,8 @@
 import sqlite3
 from flask import Flask, g, session
+from datetime import datetime
+import markdown
+from markupsafe import Markup
 
 def create_app():
     """De application factory functie."""
@@ -17,7 +20,7 @@ def create_app():
     def close_db(e=None):
         """Sluit de database connectie aan het einde van de request."""
         db = g.pop('db', None)
-        if db is not None:  # Correcte syntax
+        if db is not None:
             db.close()
 
     # --- Initialiseer de Database ---
@@ -28,6 +31,11 @@ def create_app():
     # --- Registreer Custom Jinja Filters ---
     from . import utils
     app.jinja_env.filters['datetimeformat'] = utils.format_datetime
+    
+    # Registreer het Markdown filter
+    def markdown_filter(s):
+        return Markup(markdown.markdown(s, extensions=['fenced_code', 'tables']))
+    app.jinja_env.filters['markdown'] = markdown_filter
 
     # --- Registreer Blueprints ---
     from . import auth, routes_main, routes_kb, routes_reports
@@ -46,16 +54,20 @@ def create_app():
         Wordt uitgevoerd voor elke request.
         Opent de databaseverbinding en laadt de ingelogde gebruiker.
         """
-        # Open de databaseverbinding en sla deze op in g
         g.db = sqlite3.connect(app.config['DATABASE_FILE'])
         g.db.row_factory = sqlite3.Row
         
-        # Laad de ingelogde gebruiker
         username = session.get('username')
         g.user = username
         if username:
             g.master_password = session.get('master_password')
         else:
             g.master_password = None
+
+    # --- Maak variabelen beschikbaar in alle templates ---
+    @app.context_processor
+    def inject_now():
+        """Injecteert de huidige datum/tijd in de template context."""
+        return {'now': datetime.utcnow()}
 
     return app

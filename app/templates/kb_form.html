@@ -1,22 +1,44 @@
 {% extends 'layout.html' %}
 {% block title %}{{ title }}{% endblock %}
+
 {% block content %}
-    <h1>{{ title }}</h1>
+    <div class="page-header">
+        <h1>{{ title }}</h1>
+    </div>
     
-    <!-- Dynamische action URL: genereert de juiste URL voor aanmaken of bewerken -->
-    <form method="post" class="ticket-form" action="{{ url_for('kb.kb_create') if not article else url_for('kb.kb_edit', article_id=article.id) }}">
-        <div class="form-group">
-            <label for="title">Titel:</label>
-            <input type="text" id="title" name="title" value="{{ article.title if article else '' }}" required>
-        </div>
-        <div class="form-group">
-            <label for="category">Categorie:</label>
-            <input type="text" id="category" name="category" value="{{ article.category if article else '' }}" required>
-        </div>
-        <div class="form-group">
-            <label for="content">Inhoud:</label>
-            <textarea id="content" name="content" rows="15" required>{{ article.content if article else '' }}</textarea>
-        </div>
-        <button type="submit" class="submit-button">Artikel Opslaan</button>
-    </form>
+    <div class="form-container">
+        <form method="post" class="ticket-form" id="kb-form" action="{{ url_for('kb.kb_create') if not article else url_for('kb.kb_edit', article_id=article.id) }}">
+            <fieldset>
+                <legend>Artikel Details</legend>
+                <div class="form-group">
+                    <label for="title">Titel:</label>
+                    <input type="text" id="title" name="title" value="{{ article.title if article else '' }}" required autofocus placeholder="Geef het artikel een duidelijke titel">
+                </div>
+                <div class="form-group">
+                    <label for="category">Categorie:</label>
+                    <input type="text" id="category" name="category" value="{{ article.category if article else '' }}" required placeholder="bv. Handleidingen, Probleemoplossing">
+                </div>
+                <div class="form-group">
+                    <label for="content">Inhoud:</label>
+                    <textarea id="content" name="content" rows="15" required placeholder="Schrijf hier de inhoud van het artikel. U kunt Markdown gebruiken voor opmaak.">{{ article.content if article else '' }}</textarea>
+                </div>
+            </fieldset>
+
+            <div class="form-actions">
+                <a href="{{ url_for('kb.kb_index') }}" class="button-secondary">Annuleren</a>
+                <button type="submit" class="submit-button" id="submit-button">Artikel Opslaan</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Feedback op de submit-knop
+        const kbForm = document.getElementById('kb-form');
+        const submitButton = document.getElementById('submit-button');
+
+        kbForm.addEventListener('submit', function() {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Bezig...';
+        });
+    </script>
 {% endblock %}

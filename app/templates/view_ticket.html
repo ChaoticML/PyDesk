@@ -1,64 +1,98 @@
 {% extends 'layout.html' %}
 {% block title %}Ticket #{{ ticket.id }}{% endblock %}
-{% block content %}
-    <div class="ticket-view-grid">
-        <div class="ticket-main">
-            <h1>#{{ ticket.id }}: {{ ticket.title }}</h1>
 
-            <!-- Gekoppeld KB Artikel Weergave -->
+{% block content %}
+    <div class="page-header">
+        <h1><span class="ticket-id-header">#{{ ticket.id }}</span> {{ ticket.title }}</h1>
+    </div>
+
+    <div class="ticket-view-grid">
+        <!-- Hoofd content van het ticket -->
+        <div class="ticket-main">
             {% if ticket.kb_article_id %}
             <div class="linked-kb-article">
                 <strong>Gekoppeld Kennisbank Artikel:</strong>
-                <!-- Link naar KB artikel aangepast -->
                 <a href="{{ url_for('kb.kb_article', article_id=ticket.kb_article_id) }}">{{ ticket.kb_article_title }}</a>
             </div>
             {% endif %}
 
-            <div class="ticket-details">
-                <div class="detail-section">
-                    <p><strong>Status:</strong> {{ ticket.status }}</p>
-                    <p><strong>Prioriteit:</strong> {{ ticket.priority }}</p>
-                    <p><strong>Aangemaakt:</strong> {{ ticket.created_at | datetimeformat }}</p>
+            <div class="ticket-details-card">
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Status</span>
+                        <span class="detail-value">{{ ticket.status }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Prioriteit</span>
+                        <span class="detail-value">{{ ticket.priority }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Aangemaakt op</span>
+                        <span class="detail-value">{{ ticket.created_at | datetimeformat }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Aanvrager</span>
+                        <span class="detail-value">{{ ticket.requester_name }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Telefoon</span>
+                        <span class="detail-value">{{ ticket.requester_phone or '-' }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">E-mail</span>
+                        <span class="detail-value">{{ ticket.requester_email or '-' }}</span>
+                    </div>
                 </div>
-                <div class="detail-section assignment-section">
+            </div>
+
+            <div class="ticket-description-card">
+                <h2>Beschrijving</h2>
+                <p>{{ ticket.description }}</p>
+            </div>
+
+            {% if ticket.sensitive_notes and ticket.status not in ['Resolved', 'Closed'] %}
+            <div class="sensitive-notes-view">
+                <h3>Vertrouwelijke Notities</h3>
+                <div class="warning-box">
+                    <pre><code>{{ ticket.sensitive_notes }}</code></pre>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="comments-history">
+                <h2>Geschiedenis & Reacties</h2>
+                {% for item in comments %}
+                    <div class="comment-item event-{{ item.event_type }}">
+                        <div class="comment-header">
+                            <span class="comment-author">{{ item.author }}</span>
+                            <span class="comment-meta">{{ item.created_at | datetimeformat }}</span>
+                        </div>
+                        <div class="comment-body">
+                            {{ item.comment_text }}
+                        </div>
+                    </div>
+                {% else %}
+                    <p>Nog geen geschiedenis.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Sidebar met acties -->
+        <div class="ticket-sidebar">
+            <div class="management-panel">
+                <h2>Ticket Beheren</h2>
+                <div class="assignment-section">
                     <strong>Toegewezen aan:</strong>
                     {% if ticket.assigned_to %}
                         <span class="assigned-user">{{ ticket.assigned_to }}</span>
                     {% else %}
                         <span class="unassigned">Niet toegewezen</span>
-                        <!-- Formulier voor 'Aan mij toewijzen' aangepast -->
-                        <form action="{{ url_for('main.assign', ticket_id=ticket.id) }}" method="post" style="display: inline-block; margin-left: 20px;">
+                        <form action="{{ url_for('main.assign', ticket_id=ticket.id) }}" method="post">
                             <button type="submit" class="assign-button">Aan mij toewijzen</button>
                         </form>
                     {% endif %}
                 </div>
-                <div class="detail-section">
-                    <p><strong>Aanvrager:</strong> {{ ticket.requester_name }}</p>
-                    <p><strong>Telefoon:</strong> {{ ticket.requester_phone }}</p>
-                    <p><strong>E-mail:</strong> {{ ticket.requester_email }}</p>
-                </div>
-                <div class="detail-section description">
-                    <h3>Beschrijving</h3>
-                    <p>{{ ticket.description }}</p>
-                </div>
-                
-                <!-- Sensitive notes weergave, let op gebruik van g.master_password -->
-                {% if ticket.sensitive_notes and ticket.status not in ['Resolved', 'Closed'] %}
-                <div class="detail-section sensitive-notes-view">
-                    <h3>Vertrouwelijke Notities</h3>
-                    <div class="warning-box">
-                        <!-- De decryptie gebeurt in de route, hier tonen we alleen het resultaat -->
-                        <p>{{ ticket.sensitive_notes }}</p>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="ticket-sidebar">
-            <div class="management-panel">
-                <h3>Ticket Beheren</h3>
-                <!-- Formulier voor Status Wijzigen en Reactie Toevoegen -->
+                <hr>
                 <form action="{{ url_for('main.update', ticket_id=ticket.id) }}" method="post" class="ticket-form">
                     <div class="form-group">
                         <label for="status">Status Wijzigen:</label>
@@ -71,24 +105,23 @@
                     </div>
                     <div class="form-group">
                         <label for="comment">Reactie Toevoegen:</label>
-                        <!-- Template selectie blijft hetzelfde -->
-                        <select id="template_select" onchange="applyTemplate()">
+                        <select id="template_select">
                             <option value="">Kies een sjabloon...</option>
                             {% for t in templates %}
                                 <option value="{{ t.id }}">{{ t.title }}</option>
                             {% endfor %}
                         </select>
-                        <textarea id="comment" name="comment" rows="6"></textarea>
+                        <textarea id="comment" name="comment" rows="6" placeholder="Voeg een reactie of interne notitie toe..."></textarea>
                     </div>
                     <button type="submit" class="submit-button">Ticket Bijwerken</button>
                 </form>
+            </div>
 
-                <hr>
-
-                <!-- Formulier voor Koppel Kennisbank Artikel -->
+            <div class="management-panel">
+                <h2>Kennisbank</h2>
                 <form action="{{ url_for('main.link_kb', ticket_id=ticket.id) }}" method="post" class="ticket-form">
                     <div class="form-group">
-                        <label for="kb_article_id">Koppel Kennisbank Artikel:</label>
+                        <label for="kb_article_id">Koppel Artikel:</label>
                         <select id="kb_article_id" name="kb_article_id">
                             <option value="">Selecteer een artikel...</option>
                             {% for article_option in kb_articles %}
@@ -96,38 +129,31 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <button type="submit" class="submit-button">Koppel Artikel</button>
+                    <button type="submit" class="submit-button">Artikel Koppelen</button>
                 </form>
-            </div>
-
-            <div class="comments-history">
-                <h3>Geschiedenis</h3>
-                {% for item in comments %}
-                    <div class="comment-item event-{{ item.event_type }}">
-                        <p class="comment-body">{{ item.comment_text }}</p>
-                        <p class="comment-meta">door <strong>{{ item.author }}</strong> op {{ item.created_at | datetimeformat }}</p>
-                    </div>
-                {% else %}
-                    <p>Nog geen geschiedenis.</p>
-                {% endfor %}
             </div>
         </div>
     </div>
 
-    <!-- JavaScript om Sjablonen toe te passen -->
     <script>
-        const templatesData = {
-            {% for t in templates %}
-                "{{ t.id }}": `{{ t.content | replace('\n', '\\n') | replace('\r', '') | safe }}`,
-            {% endfor %}
-        };
-
-        function applyTemplate() {
-            const templateId = document.getElementById('template_select').value;
+        document.addEventListener('DOMContentLoaded', function() {
+            const templateSelect = document.getElementById('template_select');
             const commentBox = document.getElementById('comment');
-            if (templateId && templatesData[templateId]) {
-                commentBox.value = templatesData[templateId];
+            
+            const templatesData = {
+                {% for t in templates %}
+                    "{{ t.id }}": `{{ t.content | replace('\n', '\\n') | replace('\r', '') | safe }}`,
+                {% endfor %}
+            };
+
+            if (templateSelect) {
+                templateSelect.addEventListener('change', function() {
+                    const templateId = this.value;
+                    if (templateId && templatesData[templateId]) {
+                        commentBox.value = templatesData[templateId];
+                    }
+                });
             }
-        }
+        });
     </script>
 {% endblock %}

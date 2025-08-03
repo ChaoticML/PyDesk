@@ -3,59 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}HESK Lite{% endblock %}</title>
+    <title>{% block title %}HESK Lite{% endblock %} - HESK Lite</title>
+    <!-- Favicon toevoegen -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <!-- Brand link, geen user/password nodig -->
-            <a class="nav-brand" href="{{ url_for('main.welcome') }}">HESK Lite</a>
-            
-            <!-- De hele navigatie sectie moet alleen getoond worden als de gebruiker is ingelogd -->
-            {% if g.user %}
-            <div class="nav-links">
-                <!-- Alle links naar routes binnen de applicatie verwijderen user/password parameters -->
-                <a href="{{ url_for('main.index') }}">Actieve Tickets</a>
-                <a href="{{ url_for('main.archive') }}">Archief</a>
-                <a href="{{ url_for('kb.kb_index') }}">Kennisbank</a>
-                <a href="{{ url_for('templates.templates_index') }}">Sjablonen</a>
-                <a href="{{ url_for('reports.reports_index') }}">Rapporten</a>
-                <a href="{{ url_for('main.create') }}">Nieuw Ticket</a>
-            </div>
-            <div class="nav-user">
-                <!-- Gebruik g.user in plaats van de doorgegeven 'user' variabele -->
-                <span>Welkom, {{ g.user }}</span>
+    <div class="page-container">
+        <header class="main-header">
+            <nav class="nav-container">
+                <a class="nav-brand" href="{{ url_for('main.welcome') }}">
+                    <!-- Optioneel: voeg hier een <img> logo toe -->
+                    HESK Lite
+                </a>
                 
-                <!-- De shutdown link heeft geen user/password parameters nodig -->
-                <form action="{{ url_for('main.shutdown') }}" method="get" onsubmit="return confirm('Weet u zeker dat u de applicatie wilt afsluiten?');" style="display: inline-block; margin-left: 1em;">
-                    <button type="submit" class="shutdown-button">Afsluiten</button>
-                </form>
+                {% if g.user %}
+                <ul class="nav-links">
+                    <!-- Actieve staat voor navigatielinks -->
+                    <li class="{% if request.endpoint == 'main.index' %}active{% endif %}">
+                        <a href="{{ url_for('main.index') }}">Actieve Tickets</a>
+                    </li>
+                    <li class="{% if request.endpoint == 'main.archive' %}active{% endif %}">
+                        <a href="{{ url_for('main.archive') }}">Archief</a>
+                    </li>
+                    <li class="{% if request.endpoint.startswith('kb.') %}active{% endif %}">
+                        <a href="{{ url_for('kb.kb_index') }}">Kennisbank</a>
+                    </li>
+                    <li class="{% if request.endpoint.startswith('templates.') %}active{% endif %}">
+                        <a href="{{ url_for('templates.templates_index') }}">Sjablonen</a>
+                    </li>
+                    <li class="{% if request.endpoint.startswith('reports.') %}active{% endif %}">
+                        <a href="{{ url_for('reports.reports_index') }}">Rapporten</a>
+                    </li>
+                    <li class="{% if request.endpoint == 'main.create' %}active{% endif %}">
+                        <a href="{{ url_for('main.create') }}" class="nav-button-create">Nieuw Ticket</a>
+                    </li>
+                </ul>
                 
-                <!-- Voeg hier een logout knop toe voor een betere UX -->
-                <a href="{{ url_for('auth.logout') }}" class="logout-button">Uitloggen</a>
-
-            </div>
-            {% endif %}
-        </div>
-    </nav>
-    
-    <main class="content">
-        <!-- Flash berichten worden beheerd door Flask en zijn al correct weergegeven -->
-        <div class="flash-messages">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="flash {{ category }}">
-                            <span>{{ message }}</span>
-                            <button class="flash-close" onclick="this.parentElement.style.display='none';">×</button>
-                        </div>
-                    {% endfor %}
+                <div class="nav-user">
+                    <span class="user-greeting">Welkom, <strong>{{ g.user }}</strong></span>
+                    <div class="user-actions">
+                        <a href="{{ url_for('auth.logout') }}" class="logout-button">Uitloggen</a>
+                        <form action="{{ url_for('main.shutdown') }}" method="get" onsubmit="return confirm('Weet u zeker dat u de applicatie wilt afsluiten?');">
+                            <button type="submit" class="shutdown-button">Afsluiten</button>
+                        </form>
+                    </div>
+                </div>
                 {% endif %}
-            {% endwith %}
-        </div>
+            </nav>
+        </header>
         
-        {% block content %}{% endblock %}
-    </main>
+        <main class="content">
+            <div class="flash-messages" id="flash-container">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash flash-{{ category }}">
+                                <span>{{ message }}</span>
+                                <button class="flash-close" aria-label="Sluit melding">×</button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="main-footer">
+            <p>© {{ now.year }} Jeff - HESK Lite v2.0.0</p>
+        </footer>
+    </div>
+
+    <script>
+        // Betere afhandeling voor het sluiten van flash-berichten
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashContainer = document.getElementById('flash-container');
+            if (flashContainer) {
+                flashContainer.addEventListener('click', function(event) {
+                    if (event.target.classList.contains('flash-close')) {
+                        event.target.parentElement.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

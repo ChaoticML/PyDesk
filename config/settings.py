@@ -41,7 +41,7 @@ DATABASE_FILE = os.path.join(PROJECT_ROOT, 'data', 'tickets.db')
 # en vervang deze waarde voordat u de applicatie bouwt voor productie.
 # Het standaard wachtwoord voor deze hash is 'test123'.
 USERS = {
-    "admin": "scrypt:32768:8:1$uei4xBji4Z6afAQw$2ef112b5e13e5aad4576149f9533adaa0bcf0aef211ffe99830834915d9c050834664b607ae3-placeholder"
+    "admin": "scrypt:32768:8:1$uei4xBji4Z6afAQw$2ef112b5e13e5aad4576149f9533adaa0bcf0aef211ffe99830834915d9c050834664b607ae332108ab3857a4618cdb1ad607f75ed2bf3b20e4e56296b6840f3"
 }
 
 # --- Encryptie Instellingen ---
