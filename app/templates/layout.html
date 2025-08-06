@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}HESK Lite{% endblock %} - HESK Lite</title>
+    <title>{% block title %}HESK Lite{% endblock %} - PyDesk</title>
     <!-- Favicon toevoegen -->
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -14,7 +14,7 @@
             <nav class="nav-container">
                 <a class="nav-brand" href="{{ url_for('main.welcome') }}">
                     <!-- Optioneel: voeg hier een <img> logo toe -->
-                    HESK Lite
+                    PyDesk
                 </a>
                 
                 {% if g.user %}
