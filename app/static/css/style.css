@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PyDesk Lite - Stijlblad
+   PyDesk - Stijlblad
    ========================================================================== */
 
 /* --- Globale Variabelen & Reset --- */
@@ -48,6 +48,7 @@ main.content {
     max-width: 1100px;
     width: 95%;
     margin: 2em auto;
+    padding: 0 1em; /* Voeg padding toe voor kleinere schermen */
 }
 
 h1, h2, h3 {
@@ -67,18 +68,21 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1em;
-    gap: 1em;
+    gap: 1em; /* Ruimte tussen h1 en knoppen */
+    flex-wrap: wrap; /* Zorgt ervoor dat elementen op kleinere schermen omvouwen */
 }
 
 .page-header h1 {
     margin-bottom: 0;
     border-bottom: none;
+    flex-shrink: 1; /* Laat h1 krimpen als er weinig ruimte is */
 }
 
 .page-subtitle {
     margin-top: -1em;
     margin-bottom: 2em;
     color: var(--text-light);
+    font-size: 1.1em;
 }
 
 /* --- Header & Navigatie --- */
@@ -99,6 +103,7 @@ h1 {
     max-width: 1100px;
     margin: 0 auto;
     height: 64px;
+    flex-wrap: wrap; /* Voor mobiele schermen */
 }
 
 .nav-brand {
@@ -106,6 +111,7 @@ h1 {
     font-weight: bold;
     color: var(--text-color);
     text-decoration: none;
+    flex-shrink: 0; /* Zorgt ervoor dat de brand niet krimpt */
 }
 
 .nav-links {
@@ -114,10 +120,13 @@ h1 {
     margin: 0;
     padding: 0;
     height: 100%;
+    flex-grow: 1; /* Laat de links ruimte innemen */
+    justify-content: center; /* Centreer de links */
 }
 
 .nav-links li {
     height: 100%;
+    flex-shrink: 0;
 }
 
 .nav-links a {
@@ -160,6 +169,7 @@ h1 {
     display: flex;
     align-items: center;
     gap: 1.5em;
+    flex-shrink: 0;
 }
 
 .user-greeting {
@@ -180,6 +190,7 @@ h1 {
     font-size: 0.9em;
     background-color: var(--white);
     border-top: 1px solid var(--border-color);
+    margin-top: auto; /* Zorgt ervoor dat de footer altijd onderaan de pagina staat */
 }
 
 /* --- Login Pagina --- */
@@ -188,6 +199,8 @@ h1 {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    flex-grow: 1; /* Zorgt dat de container de beschikbare ruimte inneemt */
+    padding: 2em; /* Extra padding voor responsiviteit */
 }
 
 .login-box {
@@ -234,6 +247,7 @@ h1 {
     width: 100%;
     max-width: 400px;
     margin-bottom: 1.5em;
+    text-align: left; /* Zorgt ervoor dat de flash berichten links uitgelijnd zijn in de login */
 }
 
 /* --- Algemene Formulieren --- */
@@ -242,6 +256,8 @@ h1 {
     padding: 2em;
     border-radius: 8px;
     border: 1px solid var(--border-color);
+    max-width: 800px; /* Max breedte voor formulieren */
+    margin: 0 auto; /* Centreer formulieren */
 }
 
 .form-group {
@@ -287,6 +303,7 @@ legend {
     padding: 0 0.5em;
     font-weight: 600;
     font-size: 1.1em;
+    color: var(--secondary-dark); /* Geef legendes een iets donkerdere kleur */
 }
 
 .form-grid {
@@ -312,15 +329,19 @@ legend {
     font-size: 1em;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s, opacity 0.2s;
+    transition: background-color 0.2s, opacity 0.2s, transform 0.1s;
     color: var(--white);
     text-decoration: none;
     display: inline-block;
 }
+.submit-button:active, .filter-button:active, .assign-button:active, .delete-button:active, .shutdown-button:active, .logout-button:active, .edit-button:active, .button-secondary:active {
+    transform: translateY(1px); /* Lichte klik-animatie */
+}
+
 
 .submit-button { background-color: var(--primary-color); }
 .submit-button:hover { background-color: var(--primary-dark); }
-.submit-button:disabled { background-color: #a0aec0; cursor: not-allowed; }
+.submit-button:disabled { background-color: #a0aec0; cursor: not-allowed; opacity: 0.8; }
 
 .filter-button { background-color: var(--secondary-color); }
 .filter-button:hover { background-color: var(--secondary-dark); }
@@ -381,6 +402,7 @@ legend {
 }
 .ticket-main-info .ticket-id {
     color: var(--text-light);
+    margin-right: 0.5em; /* Kleine spatie na ID */
 }
 .ticket-meta {
     font-size: 0.9em;
@@ -395,6 +417,7 @@ legend {
     align-items: flex-end;
     gap: 0.5em;
     font-size: 0.9em;
+    flex-shrink: 0; /* Zorgt dat dit deel niet krimpt */
 }
 
 .ticket-tag {
@@ -403,6 +426,7 @@ legend {
     padding: 0.3em 0.8em;
     border-radius: 15px;
     font-size: 0.85em;
+    white-space: nowrap; /* Voorkomt dat de tag breekt */
 }
 
 .ticket-summary.priority-hoog { border-left-color: var(--danger-color); }
@@ -419,6 +443,9 @@ legend {
     text-decoration: line-through;
     color: var(--text-light);
 }
+.ticket-summary.status-in-progress {
+    border-left-color: var(--info-color); /* Extra kleur voor in behandeling */
+}
 
 /* --- Ticket Detailpagina --- */
 .ticket-view-grid {
@@ -428,6 +455,9 @@ legend {
 }
 .ticket-id-header {
     color: var(--text-light);
+    font-size: 0.8em; /* Kleinere font-size voor ID naast H1 */
+    font-weight: 500;
+    margin-right: 0.5em;
 }
 .ticket-details-card, .ticket-description-card {
     background-color: var(--white);
@@ -449,6 +479,7 @@ legend {
 }
 .detail-item .detail-value {
     font-weight: 600;
+    word-wrap: break-word; /* Voorkom overflow bij lange waarden */
 }
 .ticket-description-card h2 {
     margin-top: 0;
@@ -484,11 +515,15 @@ legend {
 .management-panel h2 {
     margin-top: 0;
     font-size: 1.2em;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
 }
 .assignment-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1em;
 }
 .assigned-user {
     font-weight: bold;
@@ -506,11 +541,15 @@ legend {
 }
 .comments-history h2 {
     margin-top: 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
 }
 .comment-item {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     margin-bottom: 1em;
+    overflow: hidden; /* Zorgt dat border-radius goed werkt */
 }
 .comment-item:last-child {
     margin-bottom: 0;
@@ -533,6 +572,7 @@ legend {
     padding: 1em;
     margin: 0;
     white-space: pre-wrap;
+    word-wrap: break-word;
 }
 .comment-item.event-event {
     background-color: var(--light-gray);
@@ -584,6 +624,10 @@ legend {
     padding: 0.2em 0.6em;
     border-radius: 10px;
 }
+.kb-card-icon, .template-icon {
+    font-size: 1.3em;
+    color: var(--primary-color); /* Geeft iconen een accentkleur */
+}
 
 .kb-article-list {
     list-style-type: none;
@@ -634,7 +678,11 @@ legend {
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.3em;
     margin-top: 1.5em;
+    font-size: 1.8em; /* Consistentere heading-groottes */
 }
+.article-content-container h2 { font-size: 1.5em; }
+.article-content-container h3 { font-size: 1.3em; }
+
 .article-content-container p {
     margin-bottom: 1em;
 }
@@ -642,10 +690,11 @@ legend {
     background-color: var(--light-gray);
     padding: 1em;
     border-radius: 5px;
-    overflow-x: auto;
+    overflow-x: auto; /* Zorgt dat lange codeblokken scrollbaar zijn */
 }
 .article-content-container code {
     font-family: "Courier New", Courier, monospace;
+    font-size: 0.95em;
 }
 
 .template-list {
@@ -701,14 +750,21 @@ legend {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 1.5em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Schaduw voor de kaarten */
 }
 .chart-title {
     margin-top: 0;
     text-align: center;
     font-size: 1.2em;
+    border-bottom: 1px solid var(--border-color); /* Lijn onder de titel */
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
 }
 .chart-container {
     min-height: 250px; /* Zorgt voor een consistente hoogte terwijl de afbeelding laadt */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centreer de grafiek */
 }
 .chart-container img {
     max-width: 100%;
@@ -719,23 +775,73 @@ legend {
 }
 
 /* --- Filter Paneel --- */
-.filter-container { background-color: var(--light-gray); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5em; margin-bottom: 2em; }
-.filter-container form { display: flex; flex-wrap: wrap; gap: 1.5em; align-items: flex-end; }
-.filter-container .form-group { margin-bottom: 0; flex-grow: 1; }
+.filter-container {
+    background-color: var(--light-gray);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5em;
+    margin-bottom: 2em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Schaduw voor het filterpaneel */
+}
+.filter-container form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5em;
+    align-items: flex-end;
+}
+.filter-container .form-group {
+    margin-bottom: 0;
+    flex-grow: 1;
+    min-width: 150px; /* Minimal width for form groups in filter */
+}
 .filter-container label { font-size: 0.9em; margin-bottom: 0.3em; }
 
 /* --- Flash Berichten --- */
-.flash-messages { list-style: none; padding: 0; margin: 0 0 1.5em 0; }
-.flash { display: flex; justify-content: space-between; align-items: center; padding: 1em; margin-bottom: 1em; border-radius: 4px; color: var(--white); }
-.flash.success { background-color: var(--success-color); }
-.flash.error { background-color: var(--danger-color); }
-.flash.warning { background-color: var(--warning-color); }
-.flash.info { background-color: var(--info-color); }
-.flash-close { background: none; border: none; color: white; font-size: 1.5em; line-height: 1; cursor: pointer; margin-left: 1em; opacity: 0.7; }
-.flash-close:hover { opacity: 1; }
+.flash-messages {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5em 0;
+}
+.flash {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em 1.5em;
+    margin-bottom: 1em;
+    border-radius: 4px;
+    font-weight: 500;
+    line-height: 1.4;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.flash.success { background-color: var(--success-color); color: var(--white); }
+.flash.error { background-color: var(--danger-color); color: var(--white); }
+.flash.warning { background-color: var(--warning-color); color: var(--white); }
+.flash.info { background-color: var(--info-color); color: var(--white); }
+
+.flash-close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.5em;
+    line-height: 1;
+    cursor: pointer;
+    margin-left: 1em;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+.flash-close:hover {
+    opacity: 1;
+}
 
 /* --- Gekoppeld KB Artikel --- */
-.linked-kb-article { background-color: #ebf8ff; border: 1px solid #90cdf4; border-left: 5px solid var(--primary-color); padding: 1em; margin-bottom: 2em; border-radius: 4px; }
+.linked-kb-article {
+    background-color: #ebf8ff;
+    border: 1px solid #90cdf4;
+    border-left: 5px solid var(--primary-color);
+    padding: 1em;
+    margin-bottom: 2em;
+    border-radius: 4px;
+}
 .linked-kb-article a { color: var(--primary-color); font-weight: bold; text-decoration: none; }
 .linked-kb-article a:hover { text-decoration: underline; }
 
@@ -746,12 +852,79 @@ legend {
     background-color: var(--white);
     border: 2px dashed var(--border-color);
     border-radius: 8px;
+    margin-bottom: 2em;
 }
-.empty-state h2 {
-    margin-top: 0;
-}
+.empty-state h2 { margin-top: 0; }
 .empty-state p {
     color: var(--text-light);
     max-width: 500px;
     margin: 0 auto 1.5em auto;
+}
+
+/* --- Responsiviteit --- */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        height: auto;
+        padding: 1em 0;
+    }
+    .nav-links, .nav-user {
+        margin-top: 1em;
+        width: 100%;
+        justify-content: center;
+    }
+    .nav-links {
+        flex-wrap: wrap;
+        gap: 0.5em;
+    }
+    .nav-links li {
+        height: auto;
+    }
+    .nav-links a {
+        padding: 0.5em 0.8em;
+        border-bottom: none;
+    }
+    .nav-links li.active a {
+        border-bottom: none;
+        background-color: var(--light-gray);
+        border-radius: 5px;
+    }
+    .user-actions {
+        flex-direction: column;
+        gap: 0.5em;
+    }
+    .user-actions a, .user-actions form button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .ticket-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8em;
+    }
+    .ticket-status-info {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 0.5em;
+    }
+
+    .ticket-view-grid {
+        grid-template-columns: 1fr;
+    }
+    .report-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .form-actions .submit-button, .form-actions .button-secondary {
+        width: 100%;
+    }
 }
