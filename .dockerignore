@@ -1,0 +1,19 @@
+# Virtuele omgeving
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Build-artefacten
+build/
+dist/
+*.spec
+
+# IDE- en OS-specifieke bestanden
+.vscode/
+.idea/
+.git/
+.gitignore
+*.db
+*.log

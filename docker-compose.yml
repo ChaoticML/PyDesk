@@ -1,0 +1,9 @@
+services:
+  pydesk:
+    build: .
+    container_name: pydesk_app
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
