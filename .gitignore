@@ -15,6 +15,7 @@ __pycache__/
 data/
 # Live applicatiedata
 app/data/
+config/settings_prod.py
 
 # IDE / Editor specifieke bestanden
 .vscode/
