@@ -39,6 +39,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           # De naam van het artefact zoals het getoond wordt op GitHub
-          name: HESK-Lite-Windows-dev
+          name: PyDesk-dev
           # Het pad naar het bestand dat geüpload moet worden
           path: dist/run.exe
