@@ -5,19 +5,4 @@
 # voor de Python-pakketten en GitHub Actions die in dit project worden gebruikt.
 
 version: 2
-updates:
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    labels:
-      - "dependencies"
-      - "automated"
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    labels:
-      - "ci/cd"
-      - "automated"
