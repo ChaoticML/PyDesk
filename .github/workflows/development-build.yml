@@ -15,7 +15,7 @@ jobs:
     steps:
       # Stap 1: Haal de code uit uw repository op
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Stap 2: Installeer Python
       - name: Set up Python
