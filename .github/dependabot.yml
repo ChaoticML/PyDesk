@@ -1,8 +1,0 @@
-# ==============================================================================
-# Dependabot Configuratie voor PyDesk
-# ==============================================================================
-# Dit bestand configureert Dependabot om automatisch te controleren op updates
-# voor de Python-pakketten en GitHub Actions die in dit project worden gebruikt.
-
-version: 2
-
