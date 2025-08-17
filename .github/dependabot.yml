@@ -1,0 +1,22 @@
+# ==============================================================================
+# Dependabot Configuratie voor PyDesk
+# ==============================================================================
+# Dit bestand configureert Dependabot om automatisch te controleren op updates
+# voor de Python-pakketten die in dit project worden gebruikt.
+
+version: 2
+updates:
+  # Configuratie voor het Python (pip) package ecosysteem
+  - package-ecosystem: "pip"
+    # De locatie van het 'requirements.txt' bestand. "/" betekent de root van de repository.
+    directory: "/"
+    # Hoe vaak Dependabot moet controleren op updates.
+    schedule:
+      interval: "weekly" # Opties: "daily", "weekly", "monthly"
+    # Voegt automatisch reviewers toe aan de PR (optioneel)
+    # reviewers:
+    #   - "ChaoticML"
+    # Voegt labels toe aan de PR voor duidelijkheid
+    labels:
+      - "dependencies"
+      - "automated"
