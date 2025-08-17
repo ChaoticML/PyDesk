@@ -1,6 +1,6 @@
 # PyDesk - Standalone Helpdesk Applicatie
 
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ChaoticML/PyDesk/main.yml?branch=main)](https://github.com/ChaoticML/PyDesk/actions)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ChaoticML/PyDesk/development-build.yml?branch=main)](https://github.com/ChaoticML/PyDesk/actions)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/ChaoticML/PyDesk)](https://github.com/ChaoticML/PyDesk/releases)
 [![GitHub last commit](https://img.shields.io/github/last-commit/ChaoticML/PyDesk)](https://github.com/ChaoticML/PyDesk/commits/main)
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python)
