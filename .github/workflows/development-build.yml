@@ -29,7 +29,7 @@ jobs:
 
       # Stap 4: Bouw de .exe met PyInstaller met behulp van het .spec-bestand
       - name: Build the executable
-        run: pyinstaller PyDesk.spec # Heel simpel, want alles staat in het .spec-bestand
+        run: pyinstaller run.spec
 
       # Stap 5: Upload de gebouwde .exe als een artefact
       - name: Upload Artifact
