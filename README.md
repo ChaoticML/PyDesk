@@ -16,7 +16,7 @@
 
 1.  [**Principes**](#-principes)
 2.  [**Features**](#-features)
-3.  [**Aan de Slag (Installatie)**]([#-aan-de-slag)
+3.  [**Aan de Slag (Installatie)**](#-aan-de-slag)
 4.  [**Technische Hoogtepunten**](#-technische-hoogtepunten)
 5.  [**Bijdragen**](#-bijdragen)
 6.  [**Licentie**](#-licentie)
