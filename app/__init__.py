@@ -6,8 +6,8 @@ from markupsafe import Markup
 
 def create_app():
     """De application factory functie."""
-    app = Flask(__name__)
-    
+    app = Flask(__name__, template_folder='templates')
+
     # --- Laad Configuratie ---
     app.config.from_object('config.settings')
     app.config.update(
@@ -21,18 +21,20 @@ def create_app():
         """Sluit de database connectie aan het einde van de request."""
         db = g.pop('db', None)
         if db is not None:
-            db.close()
+            try:
+                db.close()
+            except sqlite3.Error as e:
+                print(f"Fout bij sluiten van de database: {e}")
 
     # --- Initialiseer de Database ---
     from . import database
     with app.app_context():
         database.init_db(app.config)
-        
+
     # --- Registreer Custom Jinja Filters ---
     from . import utils
     app.jinja_env.filters['datetimeformat'] = utils.format_datetime
-    
-    # Registreer het Markdown filter
+
     def markdown_filter(s):
         return Markup(markdown.markdown(s, extensions=['fenced_code', 'tables']))
     app.jinja_env.filters['markdown'] = markdown_filter
@@ -43,10 +45,10 @@ def create_app():
     app.register_blueprint(routes_main.bp)
     app.register_blueprint(routes_kb.bp)
     app.register_blueprint(routes_reports.bp)
-    
+
     from .routes_kb import bp_templates
     app.register_blueprint(bp_templates)
-    
+
     # --- Functies die voor elke request worden uitgevoerd ---
     @app.before_request
     def before_request_callbacks():
@@ -54,9 +56,13 @@ def create_app():
         Wordt uitgevoerd voor elke request.
         Opent de databaseverbinding en laadt de ingelogde gebruiker.
         """
-        g.db = sqlite3.connect(app.config['DATABASE_FILE'])
-        g.db.row_factory = sqlite3.Row
-        
+        try:
+            g.db = sqlite3.connect(app.config['DATABASE_FILE'])
+            g.db.row_factory = sqlite3.Row
+        except sqlite3.Error as e:
+            print(f"Fout bij openen van de database: {e}")
+            return "Database fout", 500
+
         username = session.get('username')
         g.user = username
         if username:
