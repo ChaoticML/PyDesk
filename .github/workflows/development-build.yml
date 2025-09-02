@@ -27,49 +27,49 @@ jobs:
 
       # Stap 4: Genereer en pas het PyInstaller .spec-bestand aan, en bouw de .exe
       - name: Configure and Build Executable
-        run: |
-          # Genereer het basis .spec-bestand
-          pyi-makespec --name PyDesk --windowed --onefile run.py
+    run: |
+      # Genereer het basis .spec-bestand met --console
+      # Dit creëert een console window, wat debugging makkelijker maakt.
+      # We verwijderen --windowed hier.
+      pyi-makespec --name PyDesk --onefile --console run.py
 
-          # Lees het gegenereerde .spec-bestand
-          $specContent = Get-Content PyDesk.spec
+      # Lees het gegenereerde .spec-bestand
+      $specContent = Get-Content PyDesk.spec
 
-          # Zoek de 'a = Analysis(...)' sectie en voeg onze aanpassingen toe
-          $newDatas = @(
-              "('app/templates', 'app/templates')",
-              "('app/static', 'app/static')",
-              "('app/database.py', 'app')",
-              "('site-packages/matplotlib', 'site-packages/matplotlib')"
-          )
-          $newHiddenImports = @(
-              "'waitress'",
-              "'markdown'",
-              "'matplotlib'"
-          )
-          $newExcludes = @(
-              "'flask_session'"
-          )
+      # Zoek de 'a = Analysis(...)' sectie en voeg onze aanpassingen toe
+      $newDatas = @(
+          "('app/templates', 'app/templates')",
+          "('app/static', 'app/static')",
+          "('app/database.py', 'app')",
+          "('site-packages/matplotlib', 'site-packages/matplotlib')"
+      )
+      $newHiddenImports = @(
+          "'waitress'",
+          "'markdown'",
+          "'matplotlib'"
+      )
+      $newExcludes = @(
+          "'flask_session'"
+      )
 
-          # Invoegen in de 'datas' lijst
-          $specContent = $specContent -replace "`n    datas=\[],", "`n    datas=@($($newDatas -join ",")),"
-          # Invoegen in de 'hiddenimports' lijst
-          $specContent = $specContent -replace "`n    hiddenimports=\[],", "`n    hiddenimports=@($($newHiddenImports -join ",")),"
-          # Invoegen in de 'excludes' lijst
-          $specContent = $specContent -replace "`n    excludes=\[],", "`n    excludes=@($($newExcludes -join ",")),"
+      # Invoegen in de 'datas' lijst
+      $specContent = $specContent -replace "`n    datas=\[],", "`n    datas=@($($newDatas -join ",")),"
+      # Invoegen in de 'hiddenimports' lijst
+      $specContent = $specContent -replace "`n    hiddenimports=\[],", "`n    hiddenimports=@($($newHiddenImports -join ",")),"
+      # Invoegen in de 'excludes' lijst
+      $specContent = $specContent -replace "`n    excludes=\[],", "`n    excludes=@($($newExcludes -join ",")),"
 
-          # Werk 'pathex' bij om relatief te zijn (of verwijder als overbodig)
-          # PyInstaller zou dit moeten kunnen afleiden als we het vanuit de root draaien
-          $specContent = $specContent -replace "`n    pathex=\[.*?\],", "`n    pathex=[],"
+      # Werk 'pathex' bij om relatief te zijn (of verwijder als overbodig)
+      $specContent = $specContent -replace "`n    pathex=\[.*?\],", "`n    pathex=[],"
 
-          # Console output instellen op False voor --windowed
-          $specContent = $specContent -replace "`n    console=True,", "`n    console=False,"
+      # Zorg ervoor dat console=True blijft (niet overschrijven naar False)
+      # De pyi-makespec --console optie zet dit al goed, dus geen verdere wijziging nodig hier.
+      
+      # Schrijf het gewijzigde .spec-bestand terug
+      Set-Content -Path PyDesk.spec -Value $specContent
 
-
-          # Schrijf het gewijzigde .spec-bestand terug
-          Set-Content -Path PyDesk.spec -Value $specContent
-
-          # Bouw de .exe met het aangepaste .spec-bestand
-          pyinstaller PyDesk.spec
+      # Bouw de .exe met het aangepaste .spec-bestand
+      pyinstaller PyDesk.spec
 
       # Stap 5: Upload de gebouwde .exe als een artefact
       - name: Upload Artifact
