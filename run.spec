@@ -4,23 +4,22 @@ block_cipher = None
 
 a = Analysis(
     ['run.py'],
-    pathex=['E:\\GitHub\\PyDesk'],  # Correct projectpad
+    pathex=[], # <-- Hier is de cruciale wijziging: leeg laten!
     binaries=[],
     datas=[
         ('app/templates', 'app/templates'),
         ('app/static', 'app/static'),
-        ('app/database.py', 'app'),
-        ('site-packages/matplotlib', 'site-packages/matplotlib')
+        ('app/database.py', 'app')
     ],
     hiddenimports=[
         'waitress',
         'markdown',
-        'matplotlib'
+        'matplotlib' # Expliciet toevoegen voor PyInstaller
     ],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=['flask_session'],
+    excludes=['flask_session'], # Sluit sessiebestanden uit
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
     cipher=block_cipher,
@@ -33,17 +32,17 @@ exe = EXE(pyz,
               a.scripts,
               a.binaries,
               a.zipfiles,
-              a.datas,  # Gebruik de datas hier
+              a.datas,
               [],
-              name='PyDesk',
+              name='PyDesk', # Dit zorgt dat de output 'PyDesk.exe' is
               debug=False,
               bootloader_ignore_signals=False,
               strip=False,
               upx=True,
               upx_exclude=[],
               runtime_tmpdir=None,
-              console=False,
+              console=True,  # BELANGRIJK: TIJDELIJK OP TRUE VOOR DEBUGGING
               disable_windowed_traceback=False,
-              target_arch='none',
+              target_arch=None,
               codesign_identity=None,
               entitlements_file=None )
