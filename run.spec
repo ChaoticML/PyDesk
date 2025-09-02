@@ -4,7 +4,7 @@ block_cipher = None
 
 a = Analysis(
     ['run.py'],
-    pathex=[], # <-- Hier is de cruciale wijziging: leeg laten!
+    pathex=[],
     binaries=[],
     datas=[
         ('app/templates', 'app/templates'),
