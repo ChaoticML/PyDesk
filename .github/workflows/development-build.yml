@@ -11,34 +11,65 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      # Stap 1: Haal de code uit uw repository op
+      # ... (Stap 1, 2, 3 blijven hetzelfde) ...
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Stap 2: Installeer Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # Stap 3: Installeer de Python-afhankelijkheden via requirements.txt
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # --- VERBETERING: Installeer direct vanuit requirements.txt ---
           pip install -r requirements.txt
 
-      # Stap 4: Bouw de .exe met PyInstaller
-      - name: Build the executable
+      # Stap 4: Genereer en pas het PyInstaller .spec-bestand aan, en bouw de .exe
+      - name: Configure and Build Executable
         run: |
-          pyinstaller --onefile --windowed `
-            --add-data "app/templates;app/templates" `
-            --add-data "app/static;app/static" `
-            --hidden-import waitress `
-            --hidden-import markdown `
-            --exclude "flask_session" `
-            --name PyDesk `
-            run.py
+          # Genereer het basis .spec-bestand
+          pyi-makespec --name PyDesk --windowed --onefile run.py
+
+          # Lees het gegenereerde .spec-bestand
+          $specContent = Get-Content PyDesk.spec
+
+          # Zoek de 'a = Analysis(...)' sectie en voeg onze aanpassingen toe
+          $newDatas = @(
+              "('app/templates', 'app/templates')",
+              "('app/static', 'app/static')",
+              "('app/database.py', 'app')",
+              "('site-packages/matplotlib', 'site-packages/matplotlib')"
+          )
+          $newHiddenImports = @(
+              "'waitress'",
+              "'markdown'",
+              "'matplotlib'"
+          )
+          $newExcludes = @(
+              "'flask_session'"
+          )
+
+          # Invoegen in de 'datas' lijst
+          $specContent = $specContent -replace "`n    datas=\[],", "`n    datas=@($($newDatas -join ",")),"
+          # Invoegen in de 'hiddenimports' lijst
+          $specContent = $specContent -replace "`n    hiddenimports=\[],", "`n    hiddenimports=@($($newHiddenImports -join ",")),"
+          # Invoegen in de 'excludes' lijst
+          $specContent = $specContent -replace "`n    excludes=\[],", "`n    excludes=@($($newExcludes -join ",")),"
+
+          # Werk 'pathex' bij om relatief te zijn (of verwijder als overbodig)
+          # PyInstaller zou dit moeten kunnen afleiden als we het vanuit de root draaien
+          $specContent = $specContent -replace "`n    pathex=\[.*?\],", "`n    pathex=[],"
+
+          # Console output instellen op False voor --windowed
+          $specContent = $specContent -replace "`n    console=True,", "`n    console=False,"
+
+
+          # Schrijf het gewijzigde .spec-bestand terug
+          Set-Content -Path PyDesk.spec -Value $specContent
+
+          # Bouw de .exe met het aangepaste .spec-bestand
+          pyinstaller PyDesk.spec
 
       # Stap 5: Upload de gebouwde .exe als een artefact
       - name: Upload Artifact
