@@ -35,25 +35,25 @@ Dit project is gebouwd met drie kernprincipes in gedachten:
 
 ## ✨ Features
 
-*   ** Ticket Management:**
+*   **🎫 Ticket Management:**
     *   Beheer de volledige levenscyclus van tickets: aanmaken, bekijken, toewijzen en bijwerken.
     *   **Geavanceerd Overzicht:** Zoek, filter en sorteer moeiteloos door alle actieve en gearchiveerde tickets.
     *   **Visuele Indicatoren:** Gekleurde randen tonen direct de prioriteit van een ticket.
 
-*   ** Workflow Versnellers:**
+*   **⚡ Workflow Versnellers:**
     *   **Sjablonen (Canned Responses):** Definieer en gebruik voorgedefinieerde antwoorden om de communicatie te versnellen.
     *   **Kennisbank-integratie:** Koppel tickets direct aan relevante artikelen en render de inhoud met volledige **Markdown-ondersteuning** voor rijke opmaak.
     *   **Automatisch Printen:** Nieuwe tickets kunnen automatisch naar de standaardprinter worden gestuurd.
 
-*   ** Betrouwbaarheid & Veiligheid:**
-    *   **Beveiligde Authenticatie:** Maakt gebruik van wachtwoord-hashing (`scrypt`) en veilig sessiebeheer.
+*   **🛡️ Betrouwbaarheid & Veiligheid:**
+    *   **Beveiligde Authenticatie:** Maakt gebruik van wachtwoord-hashing (scrypt) en veilig sessiebeheer.
     *   **Versleutelde Notities:** Gevoelige informatie wordt versleuteld met sterke AES-encryptie.
     *   **Gedetailleerde Geschiedenis (Audit Trail):** Elke actie op een ticket wordt gelogd voor volledige transparantie.
 
-*   ** Inzicht & Rapportage:**
+*   **📊 Inzicht & Rapportage:**
     *   Een dashboard met heldere grafieken toont statistieken over ticketstatussen, prioriteiten en meer.
 
-*   ** Moderne UI/UX:**
+*   **🎨 Moderne UI/UX:**
     *   Een volledig opnieuw ontworpen, consistente en intuïtieve gebruikersinterface.
     *   Duidelijke "empty states" die u begeleiden wanneer er nog geen data is.
 
@@ -67,7 +67,7 @@ Gedetailleerde, stap-voor-stap instructies vindt u op onze **[Wiki: Zelf Bouwen]
 
 Het proces omvat in het kort:
 1.  De repository klonen.
-2.  De afhankelijkheden installeren met `uv`.
+2.  De afhankelijkheden installeren met `uv` (een snellere Python package manager. Installeer met `pip install uv`).
 3.  Uw eigen, unieke wachtwoord-hash genereren.
 4.  Het `.exe`-bestand bouwen met PyInstaller.
 
@@ -78,6 +78,7 @@ Het proces omvat in het kort:
 *   **Zero-Installatie:** Gebundeld in één enkel `.exe`-bestand met PyInstaller.
 *   **Robuuste Dataopslag:** Maakt gebruik van een lokaal, geïndexeerd SQLite-databasebestand.
 *   **Professionele Architectuur:** Opgezet met het "Application Factory" patroon en Blueprints van Flask.
+*   **Beveiliging:** Gebruikt scrypt voor wachtwoord hashing en AES voor data encryptie.
 *   **Geautomatiseerde Builds (CI/CD):** Een CI/CD-pijplijn met GitHub Actions bouwt en publiceert automatisch nieuwe releases.
 
 ---
