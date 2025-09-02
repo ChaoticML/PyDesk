@@ -1,7 +1,6 @@
 # Naam van de workflow die wordt getoond in het "Actions"-tabblad
 name: Development Build
 
-# Deze workflow start automatisch bij elke push naar de 'main' branch
 on:
   push:
     branches:
@@ -9,7 +8,6 @@ on:
 
 jobs:
   build:
-    # Ik gebruik de laatste versie van Windows om de .exe te bouwen
     runs-on: windows-latest
 
     steps:
@@ -23,24 +21,27 @@ jobs:
         with:
           python-version: '3.11'
 
-      # Stap 3: Installeer de Python-afhankelijkheden
-      # Zorg ervoor dat waitress hier ook wordt geïnstalleerd, zodat PyInstaller het kan vinden.
+      # Stap 3: Installeer de Python-afhankelijkheden via requirements.txt
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install Flask PyInstaller matplotlib cryptography waitress # 'waitress' toegevoegd
+          # --- VERBETERING: Installeer direct vanuit requirements.txt ---
+          pip install -r requirements.txt
 
       # Stap 4: Bouw de .exe met PyInstaller
-      # '--hidden-import waitress' toegevoegd om ervoor te zorgen dat waitress correct wordt meegebundeld.
       - name: Build the executable
-        run: pyinstaller --onefile --windowed --add-data "app/templates;app/templates" --add-data "app/static;app/static" --hidden-import waitress run.py
+        run: |
+          pyinstaller --onefile --windowed `
+            --add-data "app/templates;app/templates" `
+            --add-data "app/static;app/static" `
+            --hidden-import waitress `
+            --hidden-import markdown `
+            --name PyDesk `
+            run.py
 
       # Stap 5: Upload de gebouwde .exe als een artefact
-      # Dit bestand zal beschikbaar zijn om te downloaden op de pagina van de workflow run.
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          # De naam van het artefact zoals het getoond wordt op GitHub
           name: PyDesk-dev
-          # Het pad naar het bestand dat geüpload moet worden
-          path: dist/run.exe
+          path: dist/PyDesk.exe
