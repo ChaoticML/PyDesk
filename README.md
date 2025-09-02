@@ -16,7 +16,7 @@
 
 1.  [**Principes**](#-principes)
 2.  [**Features**](#-features)
-3.  [**Aan de Slag (Installatie)**]([#-aan-de-slag-installatie](https://github.com/ChaoticML/PyDesk?tab=readme-ov-file#%EF%B8%8F-aan-de-slag-installatie))
+3.  [**Aan de Slag (Installatie)**]([#-aan-de-slag])
 4.  [**Technische Hoogtepunten**](#-technische-hoogtepunten)
 5.  [**Bijdragen**](#-bijdragen)
 6.  [**Licentie**](#-licentie)
@@ -59,7 +59,7 @@ Dit project is gebouwd met drie kernprincipes in gedachten:
 
 ---
 
-## 🛠️ Aan de Slag (Installatie)
+## 🛠️ Aan de Slag
 
 Voor maximale veiligheid wordt **PyDesk** momenteel gedistribueerd als broncode. U dient de applicatie zelf te bouwen om uw eigen unieke en veilige hoofdwachtwoord in te stellen.
 
