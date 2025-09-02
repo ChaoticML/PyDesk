@@ -35,25 +35,25 @@ Dit project is gebouwd met drie kernprincipes in gedachten:
 
 ## ✨ Features
 
-*   **🎫 Ticket Management:**
+*   ** Ticket Management:**
     *   Beheer de volledige levenscyclus van tickets: aanmaken, bekijken, toewijzen en bijwerken.
     *   **Geavanceerd Overzicht:** Zoek, filter en sorteer moeiteloos door alle actieve en gearchiveerde tickets.
     *   **Visuele Indicatoren:** Gekleurde randen tonen direct de prioriteit van een ticket.
 
-*   **⚡ Workflow Versnellers:**
+*   ** Workflow Versnellers:**
     *   **Sjablonen (Canned Responses):** Definieer en gebruik voorgedefinieerde antwoorden om de communicatie te versnellen.
     *   **Kennisbank-integratie:** Koppel tickets direct aan relevante artikelen en render de inhoud met volledige **Markdown-ondersteuning** voor rijke opmaak.
     *   **Automatisch Printen:** Nieuwe tickets kunnen automatisch naar de standaardprinter worden gestuurd.
 
-*   **🛡️ Betrouwbaarheid & Veiligheid:**
+*   ** Betrouwbaarheid & Veiligheid:**
     *   **Beveiligde Authenticatie:** Maakt gebruik van wachtwoord-hashing (`scrypt`) en veilig sessiebeheer.
     *   **Versleutelde Notities:** Gevoelige informatie wordt versleuteld met sterke AES-encryptie.
     *   **Gedetailleerde Geschiedenis (Audit Trail):** Elke actie op een ticket wordt gelogd voor volledige transparantie.
 
-*   **📊 Inzicht & Rapportage:**
+*   ** Inzicht & Rapportage:**
     *   Een dashboard met heldere grafieken toont statistieken over ticketstatussen, prioriteiten en meer.
 
-*   **🎨 Moderne UI/UX:**
+*   ** Moderne UI/UX:**
     *   Een volledig opnieuw ontworpen, consistente en intuïtieve gebruikersinterface.
     *   Duidelijke "empty states" die u begeleiden wanneer er nog geen data is.
 
