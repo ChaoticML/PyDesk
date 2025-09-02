@@ -143,8 +143,6 @@ def view_ticket(ticket_id):
                 decrypted_notes = utils.decrypt_data(
                     ticket['sensitive_notes'],
                     g.master_password,
-                    current_app.config.get('ENCRYPTION_SALT'),
-                    current_app.config.get('ENCRYPTION_ITERATIONS')
                 )
                 ticket['sensitive_notes'] = decrypted_notes
             except Exception as e:
