@@ -24,14 +24,16 @@ jobs:
           python-version: '3.11'
 
       # Stap 3: Installeer de Python-afhankelijkheden
+      # Zorg ervoor dat waitress hier ook wordt geïnstalleerd, zodat PyInstaller het kan vinden.
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install Flask PyInstaller matplotlib cryptography
+          pip install Flask PyInstaller matplotlib cryptography waitress # 'waitress' toegevoegd
 
       # Stap 4: Bouw de .exe met PyInstaller
+      # '--hidden-import waitress' toegevoegd om ervoor te zorgen dat waitress correct wordt meegebundeld.
       - name: Build the executable
-        run: pyinstaller --onefile --windowed --add-data "app/templates;app/templates" --add-data "app/static;app/static" run.py
+        run: pyinstaller --onefile --windowed --add-data "app/templates;app/templates" --add-data "app/static;app/static" --hidden-import waitress run.py
 
       # Stap 5: Upload de gebouwde .exe als een artefact
       # Dit bestand zal beschikbaar zijn om te downloaden op de pagina van de workflow run.
