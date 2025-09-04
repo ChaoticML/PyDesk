@@ -14,7 +14,7 @@ PORT = 5001
 SECRET_KEY = 'change-this-to-a-real-secret-key-in-production'
 
 # --- Printer Instellingen ---
-PRINT_NEW_TICKETS = False
+PRINT_NEW_TICKETS = True
 
 # --- Pad naar het databasebestand ---
 if getattr(sys, 'frozen', False):
